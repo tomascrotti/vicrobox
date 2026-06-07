@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "build:cf": "npx @cloudflare/next-on-pages",
+    "preview:cf": "npm run build:cf && npx wrangler pages dev",
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -18,6 +20,7 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.16",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -27,6 +30,7 @@
     "eslint-config-next": "16.2.7",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.8",
+    "wrangler": "^4.98.0"
   }
 }
