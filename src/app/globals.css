@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --color-orange: #F07820;
-  --color-yellow: #F5C420;
+  --color-orange: #EA7C03;
+  --color-yellow: #F8BD19;
   --color-vg: #28C44A;
   --color-vb: #1A52C8;
-  --color-teal: #00B898;
-  --color-bg-main: #0D0D0D;
-  --color-s1: #181818;
-  --color-s2: #1E1E1E;
+  --color-teal: #079684;
+  --color-bg-main: #120F0A;
+  --color-s1: #1C170F;
+  --color-s2: #251E13;
 
   --font-display: "Fredoka One", cursive;
   --font-body: "Nunito", sans-serif;
@@ -48,4 +48,25 @@
 @keyframes bob {
   0%, 100% { transform: translateX(-50%) translateY(0); }
   50% { transform: translateX(-50%) translateY(7px); }
+}
+
+@layer components {
+  .section-bg-servicios {
+    background-image: linear-gradient(rgba(28, 23, 15, 0.9), rgba(28, 23, 15, 0.9)),
+      url('https://images.unsplash.com/photo-1496337589254-7e19d01cec44?q=80&w=1600&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+  }
+  .section-bg-nosotros {
+    background-image: linear-gradient(rgba(18, 15, 10, 0.9), rgba(18, 15, 10, 0.9)),
+      url('https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=1600&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+  }
+  .section-bg-eventos {
+    background-image: linear-gradient(rgba(28, 23, 15, 0.9), rgba(28, 23, 15, 0.9)),
+      url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1600&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+  }
 }
