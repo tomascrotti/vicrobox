@@ -1,3 +1,5 @@
+'use client'
+
 import { CardCarousel } from './CardCarousel'
 import { ServiceCard } from './ServiceCard'
 import type { Service } from '@/types'

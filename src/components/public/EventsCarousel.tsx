@@ -1,3 +1,5 @@
+'use client'
+
 import { CardCarousel } from './CardCarousel'
 import { EventCard } from './EventCard'
 import type { Event } from '@/types'
