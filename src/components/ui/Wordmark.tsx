@@ -1,20 +1,21 @@
-const SEGMENTS = [
-  { text: 'VI', color: '#F8BD19' },
-  { text: 'CRO', color: '#079684' },
-  { text: 'BOX', color: '#EA7C03' },
+const LETTERS = [
+  { letter: 'V', color: '#F07820' },
+  { letter: 'I', color: '#F5C420' },
+  { letter: 'C', color: '#28C44A' },
+  { letter: 'R', color: '#F07820' },
+  { letter: 'O', color: '#1A52C8' },
+  { letter: 'B', color: '#00B898' },
+  { letter: 'O', color: '#079684' },
+  { letter: 'X', color: '#F07820' },
 ] as const
 
 type WordmarkProps = { className?: string }
 
-/**
- * Single source of truth for the "VICROBOX" logo coloring — validated
- * live with the client. Don't reintroduce per-usage color arrays.
- */
 export function Wordmark({ className }: WordmarkProps) {
   return (
     <span className={className} aria-label="Vicrobox">
-      {SEGMENTS.map(({ text, color }) => (
-        <span key={text} style={{ color }}>{text}</span>
+      {LETTERS.map(({ letter, color }, i) => (
+        <span key={i} style={{ color }}>{letter}</span>
       ))}
     </span>
   )
