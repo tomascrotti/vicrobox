@@ -5,6 +5,7 @@ export type Service = {
   name: string
   slug: string
   description: string
+  tagline?: string
   icon: string
   color: string
   active: boolean
