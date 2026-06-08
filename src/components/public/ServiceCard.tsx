@@ -1,26 +1,40 @@
 import Link from 'next/link'
-import { getServiceIcon } from '@/lib/icons'
+import { buildServiceHref } from '@/lib/service-links'
 import type { Service } from '@/types'
 
-type ServiceCardProps = {
-  service: Service
-}
+const PLACEHOLDER_IMAGE =
+  'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=600&auto=format&fit=crop'
+
+type ServiceCardProps = { service: Service }
 
 export function ServiceCard({ service }: ServiceCardProps) {
-  const Icon = getServiceIcon(service.icon)
+  const cover = service.images?.[0]?.url ?? PLACEHOLDER_IMAGE
+  const tagline = service.tagline || service.name
+
   return (
-    <Link
-      href={`/servicios/${service.slug}`}
-      className="group flex-shrink-0 w-72 bg-s2 rounded-3xl p-7 border border-white/8 hover:border-white/20 hover:-translate-y-1.5 transition-all"
-    >
+    <article className="h-full flex flex-col bg-s2 rounded-[20px] overflow-hidden border border-white/7 transition-transform duration-200 ease-out hover:-translate-y-1.5 hover:scale-[1.01]">
       <div
-        className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
-        style={{ backgroundColor: `${service.color}1F`, color: service.color }}
+        className="relative h-[200px] flex-shrink-0 bg-cover bg-center"
+        style={{ backgroundImage: `url('${cover}')` }}
       >
-        <Icon className="w-7 h-7" />
+        <span
+          className="absolute top-4 left-4 inline-flex items-center rounded-full px-3.5 py-2 text-[13px] font-bold text-white"
+          style={{ background: 'rgba(12,12,16,0.55)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}
+        >
+          {service.name}
+        </span>
       </div>
-      <h3 className="font-display text-xl mb-2 group-hover:text-orange transition-colors">{service.name}</h3>
-      <p className="text-sm text-white/55 leading-relaxed line-clamp-3">{service.description}</p>
-    </Link>
+      <div className="flex flex-1 flex-col gap-3 p-6 pb-7">
+        <p className="text-[15px] font-extrabold leading-tight" style={{ color: service.color }}>{tagline}</p>
+        <p className="flex-1 text-sm font-medium leading-relaxed text-white/55">{service.description}</p>
+        <Link
+          href={buildServiceHref(service.slug)}
+          className="inline-flex w-fit items-center gap-1 text-[13px] font-extrabold transition-[gap] hover:gap-2"
+          style={{ color: service.color }}
+        >
+          Ver detalle →
+        </Link>
+      </div>
+    </article>
   )
 }
