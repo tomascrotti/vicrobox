@@ -16,12 +16,12 @@ const SPARKLES = [
 ]
 
 const PRE_LETTERS = [
-  { letter: 'V', color: '#F07820' },
-  { letter: 'I', color: '#F5C420' },
-  { letter: 'C', color: '#28C44A' },
-  { letter: 'R', color: '#F07820' },
-  { letter: 'O', color: '#1A52C8' },
-  { letter: 'B', color: '#00B898' },
+  { letter: 'V', color: '#F8BD19' },
+  { letter: 'I', color: '#F8BD19' },
+  { letter: 'C', color: '#079684' },
+  { letter: 'R', color: '#079684' },
+  { letter: 'O', color: '#079684' },
+  { letter: 'B', color: '#EA7C03' },
 ]
 
 export function Hero() {
@@ -79,7 +79,7 @@ export function Hero() {
               ✦
             </span>
           </span>
-          <span style={{ color: '#F07820' }}>X</span>
+          <span style={{ color: '#EA7C03' }}>X</span>
         </div>
 
         <p className="text-[13px] font-extrabold tracking-[0.30em] uppercase text-white/55 mb-8">Entretenimiento</p>
