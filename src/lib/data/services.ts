@@ -13,6 +13,17 @@ export async function getActiveServices(): Promise<Service[]> {
   return data as Service[]
 }
 
+export async function getAllServices(): Promise<Service[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('services')
+    .select('*, images:service_images(*)')
+    .order('order', { ascending: true })
+
+  if (error || !data) return []
+  return data as Service[]
+}
+
 export async function getServiceBySlug(slug: string): Promise<Service | null> {
   const supabase = await createClient()
   const { data, error } = await supabase

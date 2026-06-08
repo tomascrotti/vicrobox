@@ -20,7 +20,7 @@ vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn(async () => ({ from: mockFrom })),
 }))
 
-import { getActiveServices, getServiceBySlug } from '@/lib/data/services'
+import { getActiveServices, getServiceBySlug, getAllServices } from '@/lib/data/services'
 
 describe('getActiveServices', () => {
   beforeEach(() => {
@@ -64,5 +64,29 @@ describe('getServiceBySlug', () => {
     queryResult = { data: null, error: null }
     const service = await getServiceBySlug('no-existe')
     expect(service).toBeNull()
+  })
+})
+
+describe('getAllServices', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('returns all services including inactive ones', async () => {
+    queryResult = {
+      data: [
+        { id: '1', name: 'Fotocabina', active: true, images: [] },
+        { id: '2', name: 'Draft', active: false, images: [] },
+      ],
+      error: null,
+    }
+    const services = await getAllServices()
+    expect(services).toHaveLength(2)
+    expect(services[1].active).toBe(false)
+  })
+
+  it('returns empty array on error', async () => {
+    queryResult = { data: null, error: { message: 'err' } }
+    expect(await getAllServices()).toEqual([])
   })
 })
