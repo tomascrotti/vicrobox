@@ -47,6 +47,16 @@ export type EventImage = {
 
 export type ActiveTheme = 'default' | 'navidad' | 'halloween'
 
+export type WhyUsItem = {
+  id: string
+  title: string
+  description: string
+  icon_key: string
+  order: number
+  active: boolean
+  created_at: string
+}
+
 export type SiteSettings = {
   whatsapp_number: string
   active_theme: ActiveTheme

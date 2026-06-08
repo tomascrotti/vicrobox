@@ -17,6 +17,16 @@ export async function getActiveEvents(): Promise<Event[]> {
   })) as Event[]
 }
 
+export async function getAllEventsAdmin(): Promise<Event[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('events')
+    .select('*, images:event_images(*)')
+    .order('created_at', { ascending: false })
+  if (error || !data) return []
+  return data as Event[]
+}
+
 export async function getEventBySlug(slug: string): Promise<Event | null> {
   const supabase = await createClient()
   const { data, error } = await supabase
