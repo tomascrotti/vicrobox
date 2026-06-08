@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { ServicesGrid } from './ServicesGrid'
 import { EventsGrid } from './EventsGrid'
 import { WhyUsGrid } from './WhyUsGrid'
-import type { Service, Event, WhyUsItem } from '@/types'
+import type { Service, Event, WhyUsItem, EventTypeRecord } from '@/types'
 
 const TABS = [
   { id: 'servicios', label: 'Servicios' },
@@ -18,10 +18,12 @@ export function AdminTabs({
   services,
   events,
   whyUsItems,
+  eventTypes,
 }: {
   services: Service[]
   events: Event[]
   whyUsItems: WhyUsItem[]
+  eventTypes: EventTypeRecord[]
 }) {
   const [activeTab, setActiveTab] = useState<TabId>('servicios')
 
@@ -44,7 +46,7 @@ export function AdminTabs({
       </div>
 
       {activeTab === 'servicios' && <ServicesGrid services={services} />}
-      {activeTab === 'eventos' && <EventsGrid events={events} />}
+      {activeTab === 'eventos' && <EventsGrid events={events} eventTypes={eventTypes} availableServices={services} />}
       {activeTab === 'whyus' && <WhyUsGrid items={whyUsItems} />}
     </div>
   )

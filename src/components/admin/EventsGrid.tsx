@@ -3,9 +3,17 @@
 import { useState } from 'react'
 import { AdminEventCard } from './AdminEventCard'
 import { EventFormModal } from './EventFormModal'
-import type { Event } from '@/types'
+import type { Event, EventTypeRecord, Service } from '@/types'
 
-export function EventsGrid({ events }: { events: Event[] }) {
+export function EventsGrid({
+  events,
+  eventTypes,
+  availableServices,
+}: {
+  events: Event[]
+  eventTypes: EventTypeRecord[]
+  availableServices: Service[]
+}) {
   const [editingEvent, setEditingEvent] = useState<Event | null>(null)
   const [showCreate, setShowCreate] = useState(false)
 
@@ -28,8 +36,23 @@ export function EventsGrid({ events }: { events: Event[] }) {
         </button>
       </div>
 
-      {showCreate && <EventFormModal mode="create" onClose={() => setShowCreate(false)} />}
-      {editingEvent && <EventFormModal mode="edit" event={editingEvent} onClose={() => setEditingEvent(null)} />}
+      {showCreate && (
+        <EventFormModal
+          mode="create"
+          eventTypes={eventTypes}
+          availableServices={availableServices}
+          onClose={() => setShowCreate(false)}
+        />
+      )}
+      {editingEvent && (
+        <EventFormModal
+          mode="edit"
+          event={editingEvent}
+          eventTypes={eventTypes}
+          availableServices={availableServices}
+          onClose={() => setEditingEvent(null)}
+        />
+      )}
     </>
   )
 }

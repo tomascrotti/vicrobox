@@ -7,13 +7,6 @@ import type { Event } from '@/types'
 const PLACEHOLDER =
   'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?q=80&w=600&auto=format&fit=crop'
 
-const EVENT_TYPE_LABELS: Record<string, string> = {
-  casamiento: 'Casamiento',
-  cumpleaños: 'Cumpleaños',
-  corporativo: 'Corporativo',
-  otro: 'Otro',
-}
-
 export function AdminEventCard({
   event,
   onEdit,
@@ -33,7 +26,7 @@ export function AdminEventCard({
 
   async function handleDelete() {
     setPending(true)
-    await deleteEvent(event.id, event.images?.[0]?.url)
+    await deleteEvent(event.id)
     setPending(false)
     setConfirming(false)
   }
@@ -46,7 +39,7 @@ export function AdminEventCard({
           className="absolute top-3 left-3 rounded-full px-2.5 py-1 text-[11px] font-extrabold text-white"
           style={{ background: 'rgba(12,12,16,0.6)', backdropFilter: 'blur(6px)' }}
         >
-          {EVENT_TYPE_LABELS[event.event_type] ?? event.event_type}
+          {event.event_type?.name ?? 'Evento'}
         </span>
         {!event.active && (
           <span className="absolute top-3 right-3 rounded-full bg-yellow-400 px-2.5 py-1 text-[11px] font-extrabold text-black">
