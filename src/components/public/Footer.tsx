@@ -1,7 +1,5 @@
 import Link from 'next/link'
-
-const LETTER_COLORS = ['#F07820', '#F5C420', '#28C44A', '#F07820', '#1A52C8', '#00B898', '#F07820', '#F07820']
-const WORDMARK = 'VICROBOX'
+import { Wordmark } from '@/components/ui/Wordmark'
 
 export function Footer() {
   return (
@@ -9,11 +7,7 @@ export function Footer() {
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-12">
         <div>
           <Link href="/" className="font-display text-3xl flex items-center mb-4">
-            {WORDMARK.split('').map((letter, i) => (
-              <span key={i} style={{ color: LETTER_COLORS[i] }}>
-                {letter}
-              </span>
-            ))}
+            <Wordmark />
           </Link>
           <p className="text-sm font-medium text-white/55 leading-relaxed max-w-[230px]">
             Entretenimiento y servicios fotográficos para todo tipo de eventos. Hacemos los momentos
@@ -23,16 +17,16 @@ export function Footer() {
         <div>
           <p className="text-[11px] font-extrabold tracking-[0.16em] uppercase text-white/28 mb-4">Servicios</p>
           <div className="flex flex-col gap-2.5">
-            <Link href="/servicios" className="text-sm font-semibold text-white/50 hover:text-white transition-colors">
+            <Link href="#servicios" className="text-sm font-semibold text-white/50 hover:text-white transition-colors">
               Fotocabinas
             </Link>
-            <Link href="/servicios" className="text-sm font-semibold text-white/50 hover:text-white transition-colors">
+            <Link href="#servicios" className="text-sm font-semibold text-white/50 hover:text-white transition-colors">
               Stand de Glitter
             </Link>
-            <Link href="/servicios" className="text-sm font-semibold text-white/50 hover:text-white transition-colors">
+            <Link href="#servicios" className="text-sm font-semibold text-white/50 hover:text-white transition-colors">
               Cabina Espejada
             </Link>
-            <Link href="/servicios" className="text-sm font-semibold text-white/50 hover:text-white transition-colors">
+            <Link href="#servicios" className="text-sm font-semibold text-white/50 hover:text-white transition-colors">
               Túnel LED
             </Link>
           </div>
@@ -40,10 +34,10 @@ export function Footer() {
         <div>
           <p className="text-[11px] font-extrabold tracking-[0.16em] uppercase text-white/28 mb-4">Empresa</p>
           <div className="flex flex-col gap-2.5">
-            <Link href="/eventos" className="text-sm font-semibold text-white/50 hover:text-white transition-colors">
+            <Link href="#eventos-destacados" className="text-sm font-semibold text-white/50 hover:text-white transition-colors">
               Eventos destacados
             </Link>
-            <Link href="/#cotizar" className="text-sm font-semibold text-white/50 hover:text-white transition-colors">
+            <Link href="#cta" className="text-sm font-semibold text-white/50 hover:text-white transition-colors">
               Cotizar
             </Link>
           </div>

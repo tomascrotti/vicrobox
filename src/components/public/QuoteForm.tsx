@@ -51,7 +51,7 @@ export function QuoteForm({ services, whatsappNumber }: QuoteFormProps) {
   }
 
   return (
-    <section id="cotizar" className="py-24 px-6 bg-s1">
+    <section id="cta" className="py-24 px-6 bg-s1">
       <div className="max-w-xl mx-auto">
         <h2 className="font-display text-3xl md:text-4xl text-center mb-3">Cotiza tu evento</h2>
         <p className="text-center text-white/55 mb-10">

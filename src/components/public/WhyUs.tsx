@@ -30,7 +30,7 @@ const ITEMS = [
 
 export function WhyUs() {
   return (
-    <section className="py-24 px-6">
+    <section id="nosotros" className="section-bg-nosotros px-6 py-24">
       <div className="max-w-5xl mx-auto">
         <h2 className="font-display text-3xl md:text-4xl text-center mb-14">¿Por qué elegirnos?</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-7">

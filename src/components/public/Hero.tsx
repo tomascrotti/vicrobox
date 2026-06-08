@@ -95,13 +95,13 @@ export function Hero() {
         </p>
         <div className="flex gap-3.5 justify-center flex-wrap">
           <Link
-            href="#cotizar"
+            href="#cta"
             className="bg-orange text-white px-9 py-4 rounded-full text-base font-extrabold shadow-[0_0_28px_rgba(240,120,32,0.40)] hover:scale-[1.04] hover:shadow-[0_0_44px_rgba(240,120,32,0.55)] hover:bg-[#D96610] transition-all"
           >
             ¡Cotiza tu evento!
           </Link>
           <Link
-            href="/servicios"
+            href="#servicios"
             className="text-white px-9 py-3.5 rounded-full text-base font-extrabold border-2 border-white/28 hover:border-white hover:bg-white/7 transition-all"
           >
             Ver servicios
