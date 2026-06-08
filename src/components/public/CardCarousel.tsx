@@ -38,7 +38,7 @@ export function CardCarousel<T>({ items, getKey, renderCard, ariaLabel }: CardCa
         className="flex snap-x snap-mandatory gap-[18px] overflow-x-auto overflow-y-visible scroll-smooth pt-6 pb-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item) => (
-          <div key={getKey(item)} data-card className="w-[calc((100%-36px)/3)] max-[880px]:w-[calc((100%-18px)/2)] flex-none snap-start">
+          <div key={getKey(item)} data-card className="w-[calc((100%-36px)/3)] max-[880px]:w-[calc((100%-18px)/2)] max-[540px]:w-full flex-none snap-start">
             {renderCard(item)}
           </div>
         ))}
