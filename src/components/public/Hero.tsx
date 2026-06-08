@@ -10,6 +10,9 @@ const SPARKLES = [
   { left: '92%', top: '38%', color: '#F5C420', size: '11px', delay: '3.2s' },
   { left: '36%', top: '78%', color: '#00B898', size: '10px', delay: '1.7s' },
   { left: '65%', top: '72%', color: '#1A52C8', size: '11px', delay: '0.3s' },
+  { left: '30%', top: '12%', color: '#EA7C03', size: '13px', delay: '1.1s' },
+  { left: '58%', top: '50%', color: '#F8BD19', size: '10px', delay: '2.3s' },
+  { left: '18%', top: '85%', color: '#079684', size: '14px', delay: '0.7s' },
 ]
 
 const PRE_LETTERS = [
@@ -107,12 +110,6 @@ export function Hero() {
       </div>
 
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/20 text-[11px] font-bold tracking-[0.14em] uppercase animate-[bob_2s_ease-in-out_infinite]" aria-hidden="true">
-        <svg width="16" height="22" viewBox="0 0 16 22" fill="none">
-          <rect x="1" y="1" width="14" height="20" rx="7" stroke="currentColor" strokeWidth="1.5" />
-          <circle cx="8" cy="7" r="2" fill="currentColor" opacity="0.55">
-            <animate attributeName="cy" values="7;13;7" dur="1.8s" repeatCount="indefinite" />
-          </circle>
-        </svg>
         Scroll
       </div>
     </section>
