@@ -38,6 +38,7 @@ No hay `/servicios`, `/servicios/[slug]`, `/eventos`, `/admin/dashboard`, etc. �
 El pedido explícito es: simple ahora, fácil de ampliar después. Dos mecanismos lo garantizan:
 
 1. **`buildServiceHref(slug)`** (`src/lib/service-links.ts`): helper centralizado que arma el link de cada `ServiceCard`. Hoy devuelve `#cta` (ancla a cotización). El día que se quiera una página de detalle por servicio, se cambia ese helper para devolver `/servicios/[slug]` y se arma esa ruta — sin tocar `ServiceCard` ni el carrusel.
+   - **Importante (pedido del cliente):** cuando esa página de detalle exista, debe respetar el lenguaje visual validado en este mockup — paleta cálida (`--black/--s1/--s2` + acentos `#EA7C03`/`#F8BD19`/`#079684`), tipografía (Fredoka One display + Nunito cuerpo), estilo de card (`.svc-media` imagen-arriba + `.svc-badge` + tagline con color de acento), y fondos con foto traslúcida tipo fiesta/luces. No es un rediseño nuevo — es una extensión del mismo sistema visual, reusando los mismos componentes/clases (`.svc-*`) que ya sirven a Servicios y Eventos Destacados.
 2. **Login separado en `/admin`**: aunque el modo edición se ve sobre la página pública, el punto de entrada de auth ya existe como ruta propia. Si en el futuro se necesita un dashboard real con más secciones, se cuelga de ahí sin reestructurar el flujo de login.
 
 ---
@@ -48,13 +49,16 @@ El pedido explícito es: simple ahora, fácil de ampliar después. Dos mecanismo
 |---|---|---|
 | **Header** | Wordmark multicolor "VICROBOX", nav con anclas (`#servicios`, `#nosotros`, `#cta`), fondo se vuelve sólido al hacer scroll (>40px) | estático |
 | **Hero** `#inicio` | Partículas flotantes animadas, wordmark grande con ícono de obturador SVG, eyebrow + tagline + párrafo, 2 CTAs (`¡Cotizá tu evento!` → `#cta`, `Ver servicios` → `#servicios`), scroll hint animado | estático |
-| **Servicios** `#servicios` | **Carrusel horizontal**: 3 cards visibles, 2 botones (← →) que avanzan de a una card vía `scrollBy`, + gesto drag/swipe nativo (mouse y touch) usando `overflow-x: scroll` + `scroll-snap-type`. Cada card: ícono, nombre, descripción, color de acento, link armado por `buildServiceHref(slug)` | Supabase `services` (filtro `active = true`, orden por `order`) |
-| **Nosotros** `#nosotros` | 4 razones para elegir Vicrobox (ícono + título + texto) | estático |
+| **Servicios** `#servicios` | **Carrusel horizontal**: 3 cards visibles, 2 botones (← →) debajo del carrusel que avanzan de a una card vía `scrollBy`, + gesto drag/swipe nativo (mouse y touch) usando `overflow-x: scroll` + `scroll-snap-type`. Card formato imagen-arriba: foto editable (`ImageEditOverlay`) con badge de categoría superpuesto, tagline con color de acento, descripción, link "Ver detalle →" armado por `buildServiceHref(slug)`. Fondo de sección con foto de fiesta/luces traslúcida (overlay ~90% color base) | Supabase `services` (filtro `active = true`, orden por `order`) |
+| **Nosotros** `#nosotros` | 4 razones para elegir Vicrobox (ícono + título + texto). Fondo con foto traslúcida, mismo patrón que Servicios | estático |
+| **Eventos Destacados** `#eventos-destacados` | Carrusel horizontal (mismo componente/estilo que Servicios, reutiliza `.svc-card`/`.svc-media`/`.svc-badge` con modificador `evt-card`): cards con foto del evento, badge "Tipo de evento · Cliente", tagline de servicios usados, descripción breve, "Ver más →". Fondo con foto traslúcida. Sección agregada en el mockup — entra a scope (ver "Sacado de esta versión" abajo, actualizado) | Supabase `events` + `event_images` (nuevas tablas, ver modelo de datos) |
 | **Cotización + CTA** `#cta` | Formulario: nombre, servicios (multi-select dinámico), fecha, cantidad de invitados, ubicación, mensaje opcional. Botón "Enviar por WhatsApp" arma URL `wa.me/{numero}?text={mensaje}` y la abre | servicios desde Supabase; número de WhatsApp hardcodeado por ahora (estructura permite mover a `settings` después) |
 | **WhatsApp FAB** | Botón flotante visible en toda la página | estático |
 | **Footer** | Logo, columnas de links (todos anclas a secciones), datos de contacto, copyright | estático |
 
-**Sacado de esta versión** (vs. plan anterior): Stats strip, galería de eventos destacados, páginas de detalle de servicio/evento, dashboard admin con CRUD completo. Quedan documentadas acá para cuando el cliente las pida — no se borra la idea, se posterga.
+**Sacado de esta versión** (vs. plan anterior): Stats strip (removida también del mockup — confirmado en iteración visual), páginas de detalle de servicio/evento, dashboard admin con CRUD completo. Quedan documentadas acá para cuando el cliente las pida — no se borra la idea, se posterga.
+
+**Suma respecto al plan anterior**: sección "Eventos Destacados" — surgió en iteración del mockup, el cliente la valora como prueba social visual. Entra a scope de esta versión (ver tabla de secciones y modelo de datos).
 
 ---
 
@@ -106,13 +110,31 @@ settings
   key         text PK       -- 'whatsapp_number'
   value       text
   updated_at  timestamptz
+
+events
+  id          uuid PK
+  title       text          -- ej. "Casamiento · Caro & Juan"
+  tagline     text          -- ej. "Fotocabina + Cabina Espejada"
+  description text
+  color       text          -- color acento hex (reusa paleta de marca)
+  active      boolean
+  order       integer       -- orden en el carrusel
+  created_at  timestamptz
+
+event_images
+  id          uuid PK
+  event_id    uuid FK → events
+  url         text          -- URL Supabase Storage
+  order       integer
+  created_at  timestamptz
 ```
 
-**No se crean** (vs. plan viejo): `events`, `event_images`, `event_services`. Quedan fuera de scope — la galería de eventos se agrega cuando el cliente lo pida, siguiendo el mismo patrón de extensibilidad (nueva tabla + nueva sección + helper de links).
+**No se crea** (vs. plan viejo): `event_services` (relación events↔services). Fuera de scope por ahora — el campo `tagline` de `events` cubre la necesidad actual de mostrar "qué servicios se usaron" como texto libre. Si más adelante se necesita filtrar/relacionar estructuradamente, se agrega esa tabla siguiendo el mismo patrón.
 
 ### Storage buckets
 ```
 services-images/    → fotos por servicio (gestionadas desde modo edición)
+events-images/      → fotos de eventos destacados (gestionadas desde modo edición)
 ```
 
 ---
@@ -120,13 +142,15 @@ services-images/    → fotos por servicio (gestionadas desde modo edición)
 ## Design system
 
 ### Colores
+Paleta final ajustada en mockup (menos gris, tinte cálido, acentos de marca):
 ```
---orange: #F07820   --yellow: #F5C420   --green:  #28C44A
---blue:   #1A52C8   --teal:   #00B898   --black:  #0D0D0D
---s1:     #181818   (fondo secciones alternas)
---s2:     #1E1E1E   (cards)
+--orange: #EA7C03   --yellow: #F8BD19   --teal:   #079684
+--black:  #120F0A   (fondo base)
+--s1:     #1C170F   (fondo secciones alternas)
+--s2:     #251E13   (cards)
 --muted:  rgba(255,255,255,0.55)
 ```
+(Reemplaza la paleta gris/azul-violeta de la versión anterior — validada visualmente en el mockup interactivo.)
 
 ### Fuentes
 - Display/Logo: `Fredoka One`
@@ -156,6 +180,8 @@ vicrobox/
 │   │   │   ├── Hero.tsx
 │   │   │   ├── ServicesCarousel.tsx   ← scroll-snap + botones + drag/swipe
 │   │   │   ├── ServiceCard.tsx        ← link vía buildServiceHref(slug)
+│   │   │   ├── EventsCarousel.tsx     ← mismo patrón visual que ServicesCarousel
+│   │   │   ├── EventCard.tsx          ← reusa estilos de ServiceCard (.svc-* + modificador evt-)
 │   │   │   ├── WhyUs.tsx
 │   │   │   ├── QuoteForm.tsx
 │   │   │   ├── WhatsAppFAB.tsx
@@ -187,8 +213,15 @@ vicrobox/
 ## Fuera de scope (por ahora — documentado para sumar después)
 
 - Stats strip
-- Galería de eventos destacados (`/eventos`, tablas `events`/`event_images`)
-- Páginas de detalle por servicio (`/servicios/[slug]`) — el helper `buildServiceHref` ya deja la puerta abierta
+- **Páginas de detalle por servicio/evento** (`/servicios/[slug]`) — el helper `buildServiceHref` ya deja la puerta abierta. Cliente mostró referencia de estructura para esa página futura (layout, no estilo — la visual debe ser la de este mockup, no la de la referencia):
+  - Hero: imagen del servicio + breadcrumb + badge categoría + título + tagline
+  - Fila de datos clave (ej. duración, capacidad) — **sin precio/monto base**, decisión explícita del cliente (igual que en las cards del carrusel)
+  - Descripción larga
+  - Grid de "Características" (ícono + título + texto corto, varias por servicio)
+  - Sidebar sticky: mini-resumen del servicio + botones "Solicitar cotización" / "Consultar por WhatsApp" + lista "¿Qué incluye?"
+  - Galería de imágenes del servicio
+  - FAQ en acordeón
+  - Construir reusando el sistema visual ya validado (`.svc-*`, paleta, tipografía, fondos traslúcidos) — no es un rediseño
 - Dashboard admin con CRUD completo (texto de servicios, ajustes, tema estacional)
 - Versión mobile del admin
 - Estadísticas / analytics
