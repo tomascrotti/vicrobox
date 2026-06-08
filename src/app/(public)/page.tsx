@@ -36,7 +36,7 @@ export default async function HomePage() {
           <span className="mb-2.5 block text-[11px] font-extrabold tracking-[0.22em] text-teal uppercase">Eventos Destacados</span>
           <h2 className="mb-3.5 font-display text-3xl leading-tight md:text-4xl">Momentos que ya<br />hicimos brillar</h2>
           <p className="mb-13 max-w-[520px] text-base font-medium leading-relaxed text-white/55">
-            Una muestra de los eventos donde pusimos nuestro equipo, nuestra energía y muchas ganas de divertirnos.
+            Te mostramos eventos reales desde las experiencias de nuestros clientes.
           </p>
           <EventsCarousel events={events} />
         </div>

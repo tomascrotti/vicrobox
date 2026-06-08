@@ -52,19 +52,19 @@
 
 @layer components {
   .section-bg-servicios {
-    background-image: linear-gradient(rgba(28, 23, 15, 0.9), rgba(28, 23, 15, 0.9)),
+    background-image: linear-gradient(rgba(28, 23, 15, 0.65), rgba(28, 23, 15, 0.65)),
       url('https://images.unsplash.com/photo-1496337589254-7e19d01cec44?q=80&w=1600&auto=format&fit=crop');
     background-size: cover;
     background-position: center;
   }
   .section-bg-nosotros {
-    background-image: linear-gradient(rgba(18, 15, 10, 0.9), rgba(18, 15, 10, 0.9)),
+    background-image: linear-gradient(rgba(18, 15, 10, 0.65), rgba(18, 15, 10, 0.65)),
       url('https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=1600&auto=format&fit=crop');
     background-size: cover;
     background-position: center;
   }
   .section-bg-eventos {
-    background-image: linear-gradient(rgba(28, 23, 15, 0.9), rgba(28, 23, 15, 0.9)),
+    background-image: linear-gradient(rgba(28, 23, 15, 0.65), rgba(28, 23, 15, 0.65)),
       url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1600&auto=format&fit=crop');
     background-size: cover;
     background-position: center;

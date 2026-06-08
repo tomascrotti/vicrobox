@@ -1,11 +1,21 @@
 const ITEMS = [
   {
     title: 'Experiencia comprobada',
-    description: 'Más de 500 eventos realizados con la mejor energía y dedicación.',
+    description: 'Desde 2017 realizando eventos con la mejor energía y dedicación.',
     icon: (
       <>
         <path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 01-10 0V4z" />
         <path d="M7 6H4a2 2 0 002 5M17 6h3a2 2 0 01-2 5" />
+      </>
+    ),
+  },
+  {
+    title: 'Puntualidad garantizada',
+    description: 'Coordinamos horario con quienes organizan el evento, evaluando el mejor momento para cada servicio.',
+    icon: (
+      <>
+        <circle cx="12" cy="12" r="10" />
+        <polyline points="12 6 12 12 16 14" />
       </>
     ),
   },
@@ -33,7 +43,7 @@ export function WhyUs() {
     <section id="nosotros" className="section-bg-nosotros px-6 py-24">
       <div className="max-w-5xl mx-auto">
         <h2 className="font-display text-3xl md:text-4xl text-center mb-14">¿Por qué elegirnos?</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-7">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-7">
           {ITEMS.map(({ title, description, icon }) => (
             <div key={title} className="bg-s2 rounded-3xl p-7 border border-white/8">
               <svg

@@ -13,10 +13,8 @@ export function ServiceCard({ service }: ServiceCardProps) {
 
   return (
     <article className="h-full flex flex-col bg-s2 rounded-[20px] overflow-hidden border border-white/7 transition-transform duration-200 ease-out hover:-translate-y-1.5 hover:scale-[1.01]">
-      <div
-        className="relative h-[200px] flex-shrink-0 bg-cover bg-center"
-        style={{ backgroundImage: `url('${cover}')` }}
-      >
+      <div className="relative h-[200px] flex-shrink-0 overflow-hidden">
+        <img src={cover} alt={service.name} className="absolute inset-0 h-full w-full object-cover" />
         <span
           className="absolute top-4 left-4 inline-flex items-center rounded-full px-3.5 py-2 text-[13px] font-bold text-white"
           style={{ background: 'rgba(12,12,16,0.55)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}
