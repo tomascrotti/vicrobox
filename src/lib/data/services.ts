@@ -5,7 +5,7 @@ export async function getActiveServices(): Promise<Service[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('services')
-    .select('*')
+    .select('*, images:service_images(*)')
     .eq('active', true)
     .order('order', { ascending: true })
 
