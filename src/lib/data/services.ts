@@ -30,10 +30,11 @@ export async function getServiceBySlug(slug: string): Promise<Service | null> {
     .from('services')
     .select('*, images:service_images(*)')
     .eq('slug', slug)
-    .eq('active', true)
     .order('order', { ascending: true, foreignTable: 'service_images' })
     .maybeSingle()
 
   if (error || !data) return null
+  // Check active in JS — PostgREST boolean filter + complex join can silently fail
+  if (!data.active) return null
   return data as Service
 }
