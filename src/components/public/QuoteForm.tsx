@@ -127,9 +127,23 @@ export function QuoteForm({ services, whatsappNumber }: QuoteFormProps) {
           </div>
 
           <div>
-            <label htmlFor={`${formId}-location`} className="block text-sm font-bold mb-2">
-              Ubicación *
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label htmlFor={`${formId}-location`} className="text-sm font-bold">
+                Ubicación *
+              </label>
+              <a
+                href="https://maps.google.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-xs font-bold text-white/40 hover:text-white transition-colors"
+                title="Abrir Google Maps para buscar tu ubicación"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                </svg>
+                Buscar en Maps
+              </a>
+            </div>
             <input
               id={`${formId}-location`}
               type="text"
