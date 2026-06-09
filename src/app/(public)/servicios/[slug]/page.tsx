@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { getServiceBySlug } from '@/lib/data/services'
 import { getActiveEvents } from '@/lib/data/events'
 import { createClient } from '@/lib/supabase/server'
+import { ServiceGallery } from '@/components/public/ServiceGallery'
 
 export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -81,12 +82,10 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       {galleryImages.length > 0 && (
         <section className="px-6 md:px-12 py-12 border-b border-white/8">
           <div className="mx-auto max-w-[1200px]">
-            <p className="text-[11px] font-extrabold tracking-[0.18em] text-white/30 uppercase mb-6">Galería</p>
-            <div className="columns-2 md:columns-3 gap-3 space-y-3">
-              {galleryImages.map((img) => (
-                <img key={img.id} src={img.url} alt={service.name} className="w-full rounded-xl object-cover break-inside-avoid" loading="lazy" />
-              ))}
-            </div>
+            <p className="text-[11px] font-extrabold tracking-[0.18em] text-white/30 uppercase mb-6">
+              Galería · {galleryImages.length} {galleryImages.length === 1 ? 'foto' : 'fotos'}
+            </p>
+            <ServiceGallery images={galleryImages} serviceName={service.name} />
           </div>
         </section>
       )}

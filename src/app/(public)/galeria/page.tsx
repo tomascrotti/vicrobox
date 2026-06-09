@@ -7,11 +7,11 @@ export default async function GaleriaPage() {
   return (
     <main className="min-h-screen bg-bg-main text-white">
       {/* Hero header */}
-      <section className="px-6 md:px-12 pt-32 pb-16 border-b border-white/8">
+      <section className="px-6 md:px-12 pt-24 pb-8 border-b border-white/8">
         <div className="mx-auto max-w-[1200px]">
           <a
             href="/"
-            className="mb-8 flex w-fit items-center gap-2 text-sm font-bold text-white/40 hover:text-white transition-colors"
+            className="mb-6 flex w-fit items-center gap-2 text-sm font-bold text-white/40 hover:text-white transition-colors"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 5l-7 7 7 7" />
@@ -35,7 +35,7 @@ export default async function GaleriaPage() {
       </section>
 
       {/* Gallery */}
-      <section className="px-6 md:px-12 py-16">
+      <section className="px-6 md:px-12 py-10">
         <div className="mx-auto max-w-[1200px]">
           {events.length === 0 ? (
             <p className="text-center text-white/30 py-20">Próximamente...</p>

@@ -6,7 +6,7 @@ export default async function ServiciosPage() {
 
   return (
     <main className="min-h-screen bg-bg-main text-white">
-      <section className="px-6 md:px-12 pt-32 pb-16 border-b border-white/8">
+      <section className="px-6 md:px-12 pt-24 pb-8 border-b border-white/8">
         <div className="mx-auto max-w-[1200px]">
           <a
             href="/"
@@ -29,7 +29,7 @@ export default async function ServiciosPage() {
         </div>
       </section>
 
-      <section className="px-6 md:px-12 py-16">
+      <section className="px-6 md:px-12 py-10">
         <div className="mx-auto max-w-[1200px]">
           {services.length === 0 ? (
             <p className="text-center text-white/30 py-20">Próximamente...</p>
