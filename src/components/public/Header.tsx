@@ -23,15 +23,15 @@ export function Header() {
         solid ? 'border-white/8 bg-bg-main/90 backdrop-blur-md' : 'border-transparent bg-transparent'
       }`}
     >
-      <Link href="#inicio" className="flex flex-shrink-0 items-center font-display text-2xl" aria-label="Vicrobox — Inicio">
+      <Link href="/" className="flex flex-shrink-0 items-center font-display text-2xl" aria-label="Vicrobox — Inicio">
         <Wordmark />
       </Link>
       <nav className="flex items-center gap-6">
-        <Link href="#servicios" className={NAV_LINK_CLASS}>Servicios</Link>
-        <Link href="#nosotros" className={NAV_LINK_CLASS}>Nosotros</Link>
-        <Link href="#eventos-destacados" className={NAV_LINK_CLASS}>Eventos</Link>
+        <Link href="/#servicios" className={NAV_LINK_CLASS}>Servicios</Link>
+        <Link href="/#nosotros" className={NAV_LINK_CLASS}>Nosotros</Link>
+        <Link href="/#eventos-destacados" className={NAV_LINK_CLASS}>Eventos</Link>
         <Link
-          href="#cta"
+          href="/#cta"
           className="rounded-full bg-orange px-5 py-2.5 text-sm font-extrabold whitespace-nowrap text-white shadow-[0_0_18px_rgba(234,124,3,0.30)] transition-all hover:scale-[1.03] hover:bg-[#D06B00]"
         >
           <span className="hidden min-[760px]:inline">Cotiza tu evento</span>
