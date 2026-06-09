@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { buildServiceHref } from '@/lib/service-links'
 
 describe('buildServiceHref', () => {
-  it('points every service at the quote anchor (no detail pages yet)', () => {
-    expect(buildServiceHref('fotocabina')).toBe('#cta')
-    expect(buildServiceHref('cabina-espejada')).toBe('#cta')
+  it('returns the service detail page URL', () => {
+    expect(buildServiceHref('fotocabina')).toBe('/servicios/fotocabina')
+    expect(buildServiceHref('cabina-espejada')).toBe('/servicios/cabina-espejada')
   })
 })
