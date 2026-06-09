@@ -27,13 +27,15 @@ export async function createService(data: {
   name: string
   description: string
   imageUrl: string
+  color?: string
+  order?: number
 }): Promise<{ error?: string }> {
   const supabase = await requireAuth()
   const slug = slugify(data.name)
 
   const { data: service, error } = await supabase
     .from('services')
-    .insert({ name: data.name, slug, description: data.description, active: false })
+    .insert({ name: data.name, slug, description: data.description, active: false, color: data.color ?? '#F07820', order: data.order ?? 0 })
     .select()
     .single()
 
@@ -51,14 +53,18 @@ export async function createService(data: {
 
 export async function updateService(
   id: string,
-  data: { name: string; description: string; imageUrl?: string }
+  data: { name: string; description: string; imageUrl?: string; color?: string; order?: number }
 ): Promise<{ error?: string }> {
   const supabase = await requireAuth()
   const slug = slugify(data.name)
 
+  const update: Record<string, unknown> = { name: data.name, slug, description: data.description }
+  if (data.color !== undefined) update.color = data.color
+  if (data.order !== undefined) update.order = data.order
+
   const { error } = await supabase
     .from('services')
-    .update({ name: data.name, slug, description: data.description })
+    .update(update)
     .eq('id', id)
 
   if (error) return { error: error.message }

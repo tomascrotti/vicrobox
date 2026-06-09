@@ -109,9 +109,6 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/20 text-[11px] font-bold tracking-[0.14em] uppercase animate-[bob_2s_ease-in-out_infinite]" aria-hidden="true">
-        Scroll
-      </div>
     </section>
   )
 }

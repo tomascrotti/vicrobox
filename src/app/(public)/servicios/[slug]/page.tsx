@@ -2,9 +2,10 @@ import { notFound } from 'next/navigation'
 import { getServiceBySlug, getActiveServices } from '@/lib/data/services'
 import { getActiveEvents } from '@/lib/data/events'
 
-export default async function ServicePage({ params }: { params: { slug: string } }) {
+export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const [service, allServices, events] = await Promise.all([
-    getServiceBySlug(params.slug),
+    getServiceBySlug(slug),
     getActiveServices(),
     getActiveEvents(),
   ])

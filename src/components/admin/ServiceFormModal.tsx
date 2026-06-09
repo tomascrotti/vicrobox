@@ -12,6 +12,8 @@ type Props =
 export function ServiceFormModal({ mode, service, onClose }: Props) {
   const [name, setName] = useState(service?.name ?? '')
   const [description, setDescription] = useState(service?.description ?? '')
+  const [color, setColor] = useState(service?.color ?? '#F07820')
+  const [order, setOrder] = useState(service?.order ?? 0)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string>(
     service?.images?.[0]?.url ?? ''
@@ -54,8 +56,8 @@ export function ServiceFormModal({ mode, service, onClose }: Props) {
 
       const result =
         mode === 'create'
-          ? await createService({ name, description, imageUrl: imageUrl! })
-          : await updateService(service.id, { name, description, imageUrl })
+          ? await createService({ name, description, imageUrl: imageUrl!, color, order })
+          : await updateService(service.id, { name, description, imageUrl, color, order })
 
       if (result.error) { setError(result.error); return }
       onClose()
@@ -110,6 +112,31 @@ export function ServiceFormModal({ mode, service, onClose }: Props) {
               className="rounded-xl bg-s1 border border-white/10 px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-orange resize-none"
               placeholder="Describí el servicio..."
             />
+          </div>
+
+          <div className="flex gap-4">
+            <div className="flex flex-col gap-1.5 flex-1">
+              <label className="text-sm font-bold text-white/70">Color</label>
+              <div className="flex items-center gap-3 rounded-xl bg-s1 border border-white/10 px-4 py-3">
+                <input
+                  type="color"
+                  value={color}
+                  onChange={(e) => setColor(e.target.value)}
+                  className="w-8 h-8 rounded cursor-pointer bg-transparent border-0 p-0"
+                />
+                <span className="text-sm font-mono text-white/60">{color}</span>
+              </div>
+            </div>
+            <div className="flex flex-col gap-1.5 w-28">
+              <label className="text-sm font-bold text-white/70">Posición</label>
+              <input
+                type="number"
+                min={0}
+                value={order}
+                onChange={(e) => setOrder(Number(e.target.value))}
+                className="rounded-xl bg-s1 border border-white/10 px-4 py-3 text-sm text-white outline-none focus:border-orange"
+              />
+            </div>
           </div>
 
           <div className="flex flex-col gap-1.5">
