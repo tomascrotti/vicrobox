@@ -8,6 +8,7 @@ import { slugify } from '@/lib/slugify'
 function revalidateAll() {
   revalidatePath('/admin')
   revalidatePath('/')
+  revalidatePath('/servicios')
 }
 
 async function requireAuth() {
@@ -53,7 +54,15 @@ export async function createService(data: {
 
 export async function updateService(
   id: string,
-  data: { name: string; description: string; imageUrl?: string; color?: string; order?: number }
+  data: {
+    name: string
+    description: string
+    color?: string
+    order?: number
+    newCoverUrl?: string
+    deleteImageIds?: string[]
+    newGalleryUrls?: string[]
+  }
 ): Promise<{ error?: string }> {
   const supabase = await requireAuth()
   const slug = slugify(data.name)
@@ -62,18 +71,41 @@ export async function updateService(
   if (data.color !== undefined) update.color = data.color
   if (data.order !== undefined) update.order = data.order
 
-  const { error } = await supabase
-    .from('services')
-    .update(update)
-    .eq('id', id)
-
+  const { error } = await supabase.from('services').update(update).eq('id', id)
   if (error) return { error: error.message }
 
-  if (data.imageUrl) {
-    await supabase.from('service_images').delete().eq('service_id', id)
-    const { error: imgError } = await supabase
-      .from('service_images')
-      .insert({ service_id: id, url: data.imageUrl, order: 0, is_cover: true })
+  // Replace cover — only delete old cover, leave gallery intact
+  if (data.newCoverUrl) {
+    const { data: oldCover } = await supabase
+      .from('service_images').select('id, url').eq('service_id', id).eq('is_cover', true).maybeSingle()
+    if (oldCover) {
+      const path = extractStoragePath((oldCover as any).url, 'services-images')
+      if (path) await supabase.storage.from('services-images').remove([path])
+      await supabase.from('service_images').delete().eq('id', (oldCover as any).id)
+    }
+    const { error: imgError } = await supabase.from('service_images')
+      .insert({ service_id: id, url: data.newCoverUrl, order: 0, is_cover: true })
+    if (imgError) return { error: imgError.message }
+  }
+
+  // Delete specific gallery images
+  if (data.deleteImageIds && data.deleteImageIds.length > 0) {
+    const { data: imgs } = await supabase.from('service_images').select('url').in('id', data.deleteImageIds)
+    for (const img of imgs ?? []) {
+      const path = extractStoragePath((img as any).url, 'services-images')
+      if (path) await supabase.storage.from('services-images').remove([path])
+    }
+    await supabase.from('service_images').delete().in('id', data.deleteImageIds)
+  }
+
+  // Add new gallery images
+  if (data.newGalleryUrls && data.newGalleryUrls.length > 0) {
+    const { data: existing } = await supabase
+      .from('service_images').select('order').eq('service_id', id).order('order', { ascending: false }).limit(1)
+    const baseOrder = existing?.[0] ? (existing[0] as any).order + 1 : 1
+    const { error: imgError } = await supabase.from('service_images').insert(
+      data.newGalleryUrls.map((url, i) => ({ service_id: id, url, order: baseOrder + i, is_cover: false }))
+    )
     if (imgError) return { error: imgError.message }
   }
 

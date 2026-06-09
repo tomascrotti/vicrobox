@@ -27,7 +27,7 @@ export function Header() {
         <Wordmark />
       </Link>
       <nav className="flex items-center gap-6">
-        <Link href="/#servicios" className={NAV_LINK_CLASS}>Servicios</Link>
+        <Link href="/servicios" className={NAV_LINK_CLASS}>Servicios</Link>
         <Link href="/galeria" className={NAV_LINK_CLASS}>Galería</Link>
         <Link href="/cotizar" className={NAV_LINK_CLASS}>Cotizar</Link>
         <Link
