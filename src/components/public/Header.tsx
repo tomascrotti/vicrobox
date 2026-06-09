@@ -28,8 +28,8 @@ export function Header() {
       </Link>
       <nav className="flex items-center gap-6">
         <Link href="/#servicios" className={NAV_LINK_CLASS}>Servicios</Link>
-        <Link href="/#nosotros" className={NAV_LINK_CLASS}>Nosotros</Link>
-        <Link href="/#eventos-destacados" className={NAV_LINK_CLASS}>Eventos</Link>
+        <Link href="/galeria" className={NAV_LINK_CLASS}>Galería</Link>
+        <Link href="/#cta" className={NAV_LINK_CLASS}>Cotizar</Link>
         <Link
           href="/#cta"
           className="rounded-full bg-orange px-5 py-2.5 text-sm font-extrabold whitespace-nowrap text-white shadow-[0_0_18px_rgba(234,124,3,0.30)] transition-all hover:scale-[1.03] hover:bg-[#D06B00]"
