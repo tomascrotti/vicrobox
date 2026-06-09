@@ -52,20 +52,20 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           className="absolute inset-0"
           style={{ background: 'linear-gradient(to bottom, rgba(12,12,16,0.15) 0%, rgba(12,12,16,0.5) 50%, rgba(12,12,16,0.98) 100%)' }}
         />
-        <a
-          href="/servicios"
-          className="absolute top-6 left-6 md:left-12 z-[60] flex items-center gap-2 text-sm font-bold text-white/60 hover:text-white transition-colors"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 12H5M12 5l-7 7 7 7" />
-          </svg>
-          Servicios
-        </a>
       </div>
 
       {/* ── Name + description ─────────────────────────────── */}
       <section className="px-6 md:px-12 pt-8 pb-12 border-b border-white/8">
         <div className="mx-auto max-w-[1200px]">
+          <a
+            href="/servicios"
+            className="mb-5 flex w-fit items-center gap-2 text-sm font-bold text-white/40 hover:text-white transition-colors"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 5l-7 7 7 7" />
+            </svg>
+            Servicios
+          </a>
           <span className="mb-3 block text-[11px] font-extrabold tracking-[0.22em] text-teal uppercase">
             Nuestros Servicios
           </span>

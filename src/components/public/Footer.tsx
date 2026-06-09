@@ -54,9 +54,8 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <div className="max-w-6xl mx-auto mt-9 pt-6 border-t border-white/7 flex flex-col sm:flex-row gap-2 justify-between items-center">
-        <p className="text-xs font-semibold text-white/22">© {new Date().getFullYear()} Vicrobox Entretenimiento. Todos los derechos reservados.</p>
-        <p className="text-xs font-semibold text-white/22">Hecho con ✦ para eventos increíbles</p>
+      <div className="max-w-6xl mx-auto mt-9 pt-6 border-t border-white/7">
+        <p className="text-xs font-semibold text-white/22 text-center">© {new Date().getFullYear()} Vicrobox Entretenimiento. Todos los derechos reservados.</p>
       </div>
     </footer>
   )
