@@ -67,6 +67,8 @@ export type WhyUsItem = {
 export type SiteSettings = {
   whatsapp_number: string
   active_theme: ActiveTheme
+  services_bg_url: string
+  events_bg_url: string
 }
 
 export type QuoteFormData = {

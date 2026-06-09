@@ -3,22 +3,26 @@
 import { useState } from 'react'
 import { AdminEventCard } from './AdminEventCard'
 import { EventFormModal } from './EventFormModal'
+import { SectionBgEditor } from './SectionBgEditor'
 import type { Event, EventTypeRecord, Service } from '@/types'
 
 export function EventsGrid({
   events,
   eventTypes,
   availableServices,
+  bgUrl,
 }: {
   events: Event[]
   eventTypes: EventTypeRecord[]
   availableServices: Service[]
+  bgUrl: string
 }) {
   const [editingEvent, setEditingEvent] = useState<Event | null>(null)
   const [showCreate, setShowCreate] = useState(false)
 
   return (
     <>
+      <SectionBgEditor settingKey="events_bg_url" currentUrl={bgUrl} label="Eventos Destacados" />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {events.map((event) => (
           <AdminEventCard key={event.id} event={event} onEdit={() => setEditingEvent(event)} />

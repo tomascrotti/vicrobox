@@ -294,6 +294,21 @@ export async function toggleEventActive(
   return {}
 }
 
+// ── Settings ──────────────────────────────────────────────────────────────────
+
+export async function updateSetting(
+  key: string,
+  value: string
+): Promise<{ error?: string }> {
+  const supabase = await requireAuth()
+  const { error } = await supabase
+    .from('settings')
+    .upsert({ key, value }, { onConflict: 'key' })
+  if (error) return { error: error.message }
+  revalidateAll()
+  return {}
+}
+
 // ── WhyUs ─────────────────────────────────────────────────────────────────────
 
 export async function createWhyUsItem(data: {
