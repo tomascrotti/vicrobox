@@ -1,5 +1,15 @@
 // src/types/index.ts
 
+export type ServiceFeature = {
+  id: string
+  service_id: string
+  emoji: string
+  title: string
+  description: string
+  order: number
+  created_at: string
+}
+
 export type Service = {
   id: string
   name: string
@@ -10,8 +20,13 @@ export type Service = {
   color: string
   active: boolean
   order: number
+  base_price?: string | null
+  duration?: string | null
+  capacity?: string | null
+  space_needed?: string | null
   created_at: string
   images?: ServiceImage[]
+  features?: ServiceFeature[]
 }
 
 export type ServiceImage = {

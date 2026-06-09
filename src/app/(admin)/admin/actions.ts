@@ -59,6 +59,11 @@ export async function updateService(
     description: string
     color?: string
     order?: number
+    base_price?: string
+    duration?: string
+    capacity?: string
+    space_needed?: string
+    features?: Array<{ emoji: string; title: string; description: string }>
     newCoverUrl?: string
     deleteImageIds?: string[]
     newGalleryUrls?: string[]
@@ -70,6 +75,10 @@ export async function updateService(
   const update: Record<string, unknown> = { name: data.name, slug, description: data.description }
   if (data.color !== undefined) update.color = data.color
   if (data.order !== undefined) update.order = data.order
+  update.base_price   = data.base_price   || null
+  update.duration     = data.duration     || null
+  update.capacity     = data.capacity     || null
+  update.space_needed = data.space_needed || null
 
   const { error } = await supabase.from('services').update(update).eq('id', id)
   if (error) return { error: error.message }
@@ -107,6 +116,17 @@ export async function updateService(
       data.newGalleryUrls.map((url, i) => ({ service_id: id, url, order: baseOrder + i, is_cover: false }))
     )
     if (imgError) return { error: imgError.message }
+  }
+
+  // Replace all features
+  if (data.features !== undefined) {
+    await supabase.from('service_features').delete().eq('service_id', id)
+    if (data.features.length > 0) {
+      const { error: featError } = await supabase.from('service_features').insert(
+        data.features.map((f, i) => ({ service_id: id, emoji: f.emoji, title: f.title, description: f.description, order: i }))
+      )
+      if (featError) return { error: featError.message }
+    }
   }
 
   revalidateAll()

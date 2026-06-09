@@ -28,7 +28,7 @@ export async function getServiceBySlug(slug: string): Promise<Service | null> {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from('services')
-    .select('*, images:service_images(*)')
+    .select('*, images:service_images(*), features:service_features(*)')
     .eq('slug', slug)
     .order('order', { ascending: true, foreignTable: 'service_images' })
     .maybeSingle()
@@ -36,5 +36,8 @@ export async function getServiceBySlug(slug: string): Promise<Service | null> {
   if (error || !data) return null
   // Check active in JS — PostgREST boolean filter + complex join can silently fail
   if (!data.active) return null
-  return data as Service
+  const service = data as Service
+  // Sort features by order
+  if (service.features) service.features.sort((a, b) => a.order - b.order)
+  return service
 }

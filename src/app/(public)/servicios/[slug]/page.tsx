@@ -55,7 +55,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       </div>
 
       {/* ── Name + description ─────────────────────────────── */}
-      <section className="px-6 md:px-12 pt-8 pb-12 border-b border-white/8">
+      <section className="px-6 md:px-12 pt-8 pb-10 border-b border-white/8">
         <div className="mx-auto max-w-[1200px]">
           <a
             href="/servicios"
@@ -69,14 +69,71 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
           <span className="mb-3 block text-[11px] font-extrabold tracking-[0.22em] text-teal uppercase">
             Nuestros Servicios
           </span>
-          <h1 className="font-display text-4xl leading-tight md:text-5xl mb-4">{service.name}</h1>
+          <h1 className="font-display text-4xl leading-tight md:text-5xl mb-3">{service.name}</h1>
+          {service.tagline && (
+            <p className="text-base font-medium mb-4" style={{ color: service.color }}>{service.tagline}</p>
+          )}
           {service.description && (
             <p className="max-w-2xl text-base font-medium leading-relaxed text-white/60">
               {service.description}
             </p>
           )}
+
+          {/* Stats bar */}
+          {(service.base_price || service.duration || service.capacity || service.space_needed) && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-8">
+              {service.base_price && (
+                <div className="bg-s2 rounded-2xl p-4 border border-white/8">
+                  <span className="text-xl block mb-1">💰</span>
+                  <p className="font-bold text-sm leading-tight">{service.base_price}</p>
+                  <p className="text-[11px] text-white/40 mt-1">Precio base</p>
+                </div>
+              )}
+              {service.duration && (
+                <div className="bg-s2 rounded-2xl p-4 border border-white/8">
+                  <span className="text-xl block mb-1">⏱</span>
+                  <p className="font-bold text-sm leading-tight">{service.duration}</p>
+                  <p className="text-[11px] text-white/40 mt-1">Duración</p>
+                </div>
+              )}
+              {service.capacity && (
+                <div className="bg-s2 rounded-2xl p-4 border border-white/8">
+                  <span className="text-xl block mb-1">👥</span>
+                  <p className="font-bold text-sm leading-tight">{service.capacity}</p>
+                  <p className="text-[11px] text-white/40 mt-1">Capacidad</p>
+                </div>
+              )}
+              {service.space_needed && (
+                <div className="bg-s2 rounded-2xl p-4 border border-white/8">
+                  <span className="text-xl block mb-1">📐</span>
+                  <p className="font-bold text-sm leading-tight">{service.space_needed}</p>
+                  <p className="text-[11px] text-white/40 mt-1">Espacio</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </section>
+
+      {/* ── Features ───────────────────────────────────────── */}
+      {service.features && service.features.length > 0 && (
+        <section className="px-6 md:px-12 py-10 border-b border-white/8">
+          <div className="mx-auto max-w-[1200px]">
+            <p className="text-[11px] font-extrabold tracking-[0.18em] text-white/30 uppercase mb-6">Características</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {service.features.map((f) => (
+                <div key={f.id} className="flex items-start gap-4 bg-s2 rounded-2xl p-5 border border-white/8">
+                  <span className="text-2xl flex-shrink-0 mt-0.5">{f.emoji}</span>
+                  <div>
+                    <p className="font-bold text-sm">{f.title}</p>
+                    {f.description && <p className="text-white/50 text-sm mt-1">{f.description}</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ── Gallery ────────────────────────────────────────── */}
       {galleryImages.length > 0 && (
