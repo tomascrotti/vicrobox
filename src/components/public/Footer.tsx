@@ -5,10 +5,10 @@ import { getSettings } from '@/lib/data/settings'
 export async function Footer() {
   const settings = await getSettings()
 
-  const links = [
-    settings.instagram_url && { label: 'Instagram', href: settings.instagram_url },
-    settings.facebook_url  && { label: 'Facebook',  href: settings.facebook_url  },
-  ].filter(Boolean) as { label: string; href: string }[]
+  const contactLinks = [
+    { label: 'Instagram', href: settings.instagram_url },
+    { label: 'Facebook',  href: settings.facebook_url  },
+  ]
 
   return (
     <footer className="bg-[#0A0A0A] border-t border-white/7 px-6 md:px-12 pt-12 pb-8">
@@ -16,7 +16,7 @@ export async function Footer() {
 
         {/* Logo + slogan */}
         <div>
-          <Link href="/" className="flex items-center mb-3">
+          <Link href="/" className="font-display text-3xl flex items-center mb-3">
             <Wordmark />
           </Link>
           <p className="text-sm font-medium text-white/45 leading-relaxed max-w-[240px]">
@@ -24,12 +24,12 @@ export async function Footer() {
           </p>
         </div>
 
-        {/* Contacto */}
-        {links.length > 0 && (
-          <div>
-            <p className="text-[11px] font-extrabold tracking-[0.16em] uppercase text-white/28 mb-3">Contacto</p>
-            <div className="flex flex-col gap-2">
-              {links.map((link) => (
+        {/* Contacto — siempre visible */}
+        <div>
+          <p className="text-[11px] font-extrabold tracking-[0.16em] uppercase text-white/28 mb-3">Contacto</p>
+          <div className="flex flex-col gap-2">
+            {contactLinks.map((link) =>
+              link.href ? (
                 <a
                   key={link.label}
                   href={link.href}
@@ -39,10 +39,14 @@ export async function Footer() {
                 >
                   {link.label}
                 </a>
-              ))}
-            </div>
+              ) : (
+                <span key={link.label} className="text-sm font-semibold text-white/20">
+                  {link.label}
+                </span>
+              )
+            )}
           </div>
-        )}
+        </div>
       </div>
 
       <div className="max-w-6xl mx-auto mt-8 pt-5 border-t border-white/7">
