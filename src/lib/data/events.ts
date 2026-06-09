@@ -37,6 +37,7 @@ export async function getEventBySlug(slug: string): Promise<Event | null> {
     .from('events')
     .select(EVENT_SELECT)
     .eq('slug', slug)
+    .eq('active', true)
     .maybeSingle()
   if (error || !data) return null
   return mapEvents([data])[0]
