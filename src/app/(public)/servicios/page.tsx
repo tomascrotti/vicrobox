@@ -1,13 +1,22 @@
 import { getActiveServices } from '@/lib/data/services'
-import Link from 'next/link'
+import { ServiceCard } from '@/components/public/ServiceCard'
 
 export default async function ServiciosPage() {
   const services = await getActiveServices()
 
   return (
     <main className="min-h-screen bg-bg-main text-white">
-      <section className="px-6 md:px-12 pt-24 pb-8 border-b border-white/8">
-        <div className="mx-auto max-w-[1200px]">
+
+      {/* ── Header ────────────────────────────────────────────── */}
+      <section className="relative px-6 md:px-12 pt-24 pb-10 border-b border-white/8 overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(ellipse at 5% 80%, rgba(240,120,32,0.10) 0%, transparent 55%), radial-gradient(ellipse at 95% 10%, rgba(20,200,180,0.07) 0%, transparent 50%)',
+          }}
+        />
+        <div className="relative mx-auto max-w-[1200px]">
           <a
             href="/"
             className="mb-8 flex w-fit items-center gap-2 text-sm font-bold text-white/40 hover:text-white transition-colors"
@@ -29,42 +38,16 @@ export default async function ServiciosPage() {
         </div>
       </section>
 
-      <section className="px-6 md:px-12 py-10">
+      {/* ── Grid ──────────────────────────────────────────────── */}
+      <section className="px-6 md:px-12 py-12">
         <div className="mx-auto max-w-[1200px]">
           {services.length === 0 ? (
             <p className="text-center text-white/30 py-20">Próximamente...</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {services.map((service) => {
-                const coverImg = (service.images?.find((i) => i.is_cover) ?? service.images?.[0])?.url
-                return (
-                  <Link
-                    key={service.id}
-                    href={`/servicios/${service.slug}`}
-                    className="group flex flex-col bg-s2 rounded-[20px] overflow-hidden border border-white/7 hover:-translate-y-1 hover:border-white/20 transition-all duration-200"
-                  >
-                    <div className="relative h-[200px] overflow-hidden">
-                      {coverImg ? (
-                        <img src={coverImg} alt={service.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
-                      ) : (
-                        <div className="absolute inset-0" style={{ backgroundColor: service.color + '33' }} />
-                      )}
-                    </div>
-                    <div className="p-6 pb-7">
-                      <p className="font-bold text-[11px] tracking-[0.14em] uppercase mb-1" style={{ color: service.color }}>
-                        {service.tagline || service.name}
-                      </p>
-                      <h2 className="font-display text-xl mb-2">{service.name}</h2>
-                      {service.description && (
-                        <p className="text-white/55 text-sm leading-relaxed line-clamp-2">{service.description}</p>
-                      )}
-                      <span className="mt-4 inline-block text-sm font-bold transition-colors" style={{ color: service.color }}>
-                        Ver detalle →
-                      </span>
-                    </div>
-                  </Link>
-                )
-              })}
+              {services.map((service) => (
+                <ServiceCard key={service.id} service={service} />
+              ))}
             </div>
           )}
         </div>
