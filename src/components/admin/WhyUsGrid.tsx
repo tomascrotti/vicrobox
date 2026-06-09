@@ -3,14 +3,16 @@
 import { useState } from 'react'
 import { AdminWhyUsCard } from './AdminWhyUsCard'
 import { WhyUsFormModal } from './WhyUsFormModal'
+import { SectionBgEditor } from './SectionBgEditor'
 import type { WhyUsItem } from '@/types'
 
-export function WhyUsGrid({ items }: { items: WhyUsItem[] }) {
+export function WhyUsGrid({ items, bgUrl }: { items: WhyUsItem[]; bgUrl: string }) {
   const [editingItem, setEditingItem] = useState<WhyUsItem | null>(null)
   const [showCreate, setShowCreate] = useState(false)
 
   return (
     <>
+      <SectionBgEditor settingKey="whyus_bg_url" currentUrl={bgUrl} label="¿Por qué elegirnos?" />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {items.map((item) => (
           <AdminWhyUsCard key={item.id} item={item} onEdit={() => setEditingItem(item)} />

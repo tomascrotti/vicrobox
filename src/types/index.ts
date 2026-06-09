@@ -69,6 +69,7 @@ export type SiteSettings = {
   active_theme: ActiveTheme
   services_bg_url: string
   events_bg_url: string
+  whyus_bg_url: string
 }
 
 export type QuoteFormData = {

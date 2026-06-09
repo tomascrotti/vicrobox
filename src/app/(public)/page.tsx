@@ -37,7 +37,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <WhyUs />
+      <WhyUs bgUrl={settings.whyus_bg_url} />
 
       <section
         id="eventos-destacados"

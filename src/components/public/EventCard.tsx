@@ -21,7 +21,7 @@ export function EventCard({ event }: { event: Event }) {
       <div className="flex flex-1 flex-col gap-3 p-6 pb-7">
         <p className="text-[15px] font-extrabold leading-tight text-orange">{eventBadge(event)}</p>
         <p className="flex-1 text-sm font-medium leading-relaxed text-white/55">{event.description}</p>
-        <a href="#cta" className="inline-flex w-fit items-center gap-1 text-[13px] font-extrabold text-orange transition-[gap] hover:gap-2">Ver más →</a>
+        <a href={`/eventos/${event.slug}`} className="inline-flex w-fit items-center gap-1 text-[13px] font-extrabold text-orange transition-[gap] hover:gap-2">Ver más →</a>
       </div>
     </article>
   )

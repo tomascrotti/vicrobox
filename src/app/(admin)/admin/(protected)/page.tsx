@@ -24,6 +24,7 @@ export default async function AdminPage() {
           eventTypes={eventTypes}
           servicesBgUrl={settings.services_bg_url}
           eventsBgUrl={settings.events_bg_url}
+          whyusBgUrl={settings.whyus_bg_url}
         />
       </div>
     </main>

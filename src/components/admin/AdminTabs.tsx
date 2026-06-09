@@ -21,6 +21,7 @@ export function AdminTabs({
   eventTypes,
   servicesBgUrl,
   eventsBgUrl,
+  whyusBgUrl,
 }: {
   services: Service[]
   events: Event[]
@@ -28,6 +29,7 @@ export function AdminTabs({
   eventTypes: EventTypeRecord[]
   servicesBgUrl: string
   eventsBgUrl: string
+  whyusBgUrl: string
 }) {
   const [activeTab, setActiveTab] = useState<TabId>('servicios')
 
@@ -51,7 +53,7 @@ export function AdminTabs({
 
       {activeTab === 'servicios' && <ServicesGrid services={services} bgUrl={servicesBgUrl} />}
       {activeTab === 'eventos' && <EventsGrid events={events} eventTypes={eventTypes} availableServices={services} bgUrl={eventsBgUrl} />}
-      {activeTab === 'whyus' && <WhyUsGrid items={whyUsItems} />}
+      {activeTab === 'whyus' && <WhyUsGrid items={whyUsItems} bgUrl={whyusBgUrl} />}
     </div>
   )
 }

@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { updateSetting } from '@/app/(admin)/admin/actions'
 
 type Props = {
-  settingKey: 'services_bg_url' | 'events_bg_url'
+  settingKey: 'services_bg_url' | 'events_bg_url' | 'whyus_bg_url'
   currentUrl: string
   label: string
 }
