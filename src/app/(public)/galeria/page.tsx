@@ -11,7 +11,7 @@ export default async function GaleriaPage() {
         <div className="mx-auto max-w-[1200px]">
           <a
             href="/"
-            className="inline-flex items-center gap-2 text-sm font-bold text-white/40 hover:text-white transition-colors mb-8"
+            className="mb-8 flex w-fit items-center gap-2 text-sm font-bold text-white/40 hover:text-white transition-colors"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 5l-7 7 7 7" />
