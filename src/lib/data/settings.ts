@@ -11,6 +11,8 @@ const DEFAULTS: SiteSettings = {
   services_bg_url: DEFAULT_SERVICES_BG,
   events_bg_url: DEFAULT_EVENTS_BG,
   whyus_bg_url: DEFAULT_WHYUS_BG,
+  instagram_url: '',
+  facebook_url: '',
 }
 
 const VALID_THEMES: ActiveTheme[] = ['default', 'navidad', 'halloween']
@@ -32,5 +34,7 @@ export async function getSettings(): Promise<SiteSettings> {
     services_bg_url: byKey.services_bg_url ?? DEFAULTS.services_bg_url,
     events_bg_url: byKey.events_bg_url ?? DEFAULTS.events_bg_url,
     whyus_bg_url: byKey.whyus_bg_url ?? DEFAULTS.whyus_bg_url,
+    instagram_url: byKey.instagram_url ?? DEFAULTS.instagram_url,
+    facebook_url: byKey.facebook_url ?? DEFAULTS.facebook_url,
   }
 }

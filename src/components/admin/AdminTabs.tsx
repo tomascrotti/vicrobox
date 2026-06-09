@@ -25,6 +25,8 @@ export function AdminTabs({
   eventsBgUrl,
   whyusBgUrl,
   whatsappNumber,
+  instagramUrl,
+  facebookUrl,
 }: {
   services: Service[]
   events: Event[]
@@ -34,6 +36,8 @@ export function AdminTabs({
   eventsBgUrl: string
   whyusBgUrl: string
   whatsappNumber: string
+  instagramUrl: string
+  facebookUrl: string
 }) {
   const [activeTab, setActiveTab] = useState<TabId>('servicios')
 
@@ -58,7 +62,7 @@ export function AdminTabs({
       {activeTab === 'servicios' && <ServicesGrid services={services} bgUrl={servicesBgUrl} />}
       {activeTab === 'eventos' && <EventsGrid events={events} eventTypes={eventTypes} availableServices={services} bgUrl={eventsBgUrl} />}
       {activeTab === 'whyus' && <WhyUsGrid items={whyUsItems} bgUrl={whyusBgUrl} />}
-      {activeTab === 'config' && <SettingsPanel whatsappNumber={whatsappNumber} />}
+      {activeTab === 'config' && <SettingsPanel whatsappNumber={whatsappNumber} instagramUrl={instagramUrl} facebookUrl={facebookUrl} />}
     </div>
   )
 }

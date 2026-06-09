@@ -87,6 +87,8 @@ export type SiteSettings = {
   services_bg_url: string
   events_bg_url: string
   whyus_bg_url: string
+  instagram_url: string
+  facebook_url: string
 }
 
 export type QuoteFormData = {
