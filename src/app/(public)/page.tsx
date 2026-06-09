@@ -1,7 +1,7 @@
 import { Hero } from '@/components/public/Hero'
 import { ServicesCarousel } from '@/components/public/ServicesCarousel'
 import { WhyUs } from '@/components/public/WhyUs'
-import { EventsCarousel } from '@/components/public/EventsCarousel'
+import { EventsSection } from '@/components/public/EventsSection'
 import { QuoteForm } from '@/components/public/QuoteForm'
 import { getActiveServices } from '@/lib/data/services'
 import { getActiveEvents } from '@/lib/data/events'
@@ -48,14 +48,7 @@ export default async function HomePage() {
           backgroundPosition: 'center',
         }}
       >
-        <div className="mx-auto max-w-[1200px]">
-          <span className="mb-2.5 block text-[11px] font-extrabold tracking-[0.22em] text-teal uppercase">Eventos Destacados</span>
-          <h2 className="mb-3.5 font-display text-3xl leading-tight md:text-4xl">Momentos que ya<br />hicimos brillar</h2>
-          <p className="mb-13 max-w-[520px] text-base font-medium leading-relaxed text-white/55">
-            Te mostramos eventos reales desde las experiencias de nuestros clientes.
-          </p>
-          <EventsCarousel events={events} />
-        </div>
+        <EventsSection events={events} />
       </section>
 
       <QuoteForm services={services} whatsappNumber={settings.whatsapp_number} />
