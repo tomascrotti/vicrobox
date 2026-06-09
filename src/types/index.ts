@@ -22,13 +22,19 @@ export type ServiceImage = {
   created_at: string
 }
 
-export type EventType = 'casamiento' | 'cumpleaños' | 'corporativo' | 'otro'
+export type EventTypeRecord = {
+  id: string
+  name: string
+  slug: string
+  created_at: string
+}
 
 export type Event = {
   id: string
   name: string
   slug: string
-  event_type: EventType
+  event_type_id: string
+  event_type?: EventTypeRecord
   description: string
   date: string | null
   active: boolean
@@ -42,6 +48,7 @@ export type EventImage = {
   event_id: string
   url: string
   order: number
+  service_id?: string | null
   created_at: string
 }
 

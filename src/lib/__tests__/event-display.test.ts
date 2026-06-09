@@ -2,11 +2,11 @@ import { describe, it, expect } from 'vitest'
 import { eventBadge, eventTagline } from '@/lib/event-display'
 
 describe('eventBadge', () => {
-  it('combines the human-readable event type with the event name', () => {
-    expect(eventBadge({ event_type: 'casamiento', name: 'Caro & Juan' })).toBe('Casamiento · Caro & Juan')
+  it('uses the event_type name joined from DB', () => {
+    expect(eventBadge({ event_type: { id: '1', name: 'Casamiento', slug: 'casamiento', created_at: '' }, name: 'Caro & Juan' })).toBe('Casamiento · Caro & Juan')
   })
-  it('falls back to "Evento" for the catch-all type', () => {
-    expect(eventBadge({ event_type: 'otro', name: 'Lanzamiento ABC' })).toBe('Evento · Lanzamiento ABC')
+  it('falls back to "Evento" when event_type is undefined', () => {
+    expect(eventBadge({ event_type: undefined, name: 'Lanzamiento ABC' })).toBe('Evento · Lanzamiento ABC')
   })
 })
 

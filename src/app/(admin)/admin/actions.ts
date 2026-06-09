@@ -81,19 +81,63 @@ export async function deleteService(
 ): Promise<{ error?: string }> {
   const supabase = await requireAuth()
 
+  // Collect events that will be affected (before cascade)
+  const { data: affectedEventServices } = await supabase
+    .from('event_services')
+    .select('event_id')
+    .eq('service_id', id)
+  const affectedEventIds = [...new Set((affectedEventServices ?? []).map((r: any) => r.event_id))]
+
+  // Delete event_images storage files for this service before cascade removes the rows
+  const { data: eventImages } = await supabase
+    .from('event_images')
+    .select('url')
+    .eq('service_id', id)
+  const evtPaths = (eventImages ?? [])
+    .map((img: any) => extractStoragePath(img.url, 'events-images'))
+    .filter(Boolean) as string[]
+  if (evtPaths.length > 0) {
+    await supabase.storage.from('events-images').remove(evtPaths)
+  }
+
+  // Delete service's own image from storage
   if (imageUrl) {
-    const storagePrefix = '/storage/v1/object/public/services-images/'
-    const path = imageUrl.includes(storagePrefix)
-      ? imageUrl.split(storagePrefix)[1]
-      : null
+    const path = extractStoragePath(imageUrl, 'services-images')
     if (path) await supabase.storage.from('services-images').remove([path])
   }
 
+  // Delete service (DB cascade handles: service_images, event_services, event_images.service_id)
   const { error } = await supabase.from('services').delete().eq('id', id)
   if (error) return { error: error.message }
 
+  // Delete events that now have no services
+  for (const eventId of affectedEventIds) {
+    const { count } = await supabase
+      .from('event_services')
+      .select('*', { count: 'exact', head: true })
+      .eq('event_id', eventId)
+    if ((count ?? 0) === 0) {
+      const { data: remainingImages } = await supabase
+        .from('event_images')
+        .select('url')
+        .eq('event_id', eventId)
+      const remainingPaths = (remainingImages ?? [])
+        .map((img: any) => extractStoragePath(img.url, 'events-images'))
+        .filter(Boolean) as string[]
+      if (remainingPaths.length > 0) {
+        await supabase.storage.from('events-images').remove(remainingPaths)
+      }
+      await supabase.from('events').delete().eq('id', eventId)
+    }
+  }
+
   revalidateAll()
   return {}
+}
+
+function extractStoragePath(url: string, bucket: string): string | null {
+  const prefix = `/storage/v1/object/public/${bucket}/`
+  return url.includes(prefix) ? url.split(prefix)[1] : null
 }
 
 export async function toggleServiceActive(
@@ -109,53 +153,58 @@ export async function toggleServiceActive(
 
 // ── Events ────────────────────────────────────────────────────────────────────
 
+export async function createEventType(name: string): Promise<{ id?: string; error?: string }> {
+  const supabase = await requireAuth()
+  const slug = slugify(name)
+  const { data, error } = await supabase
+    .from('event_types')
+    .insert({ name: name.trim(), slug })
+    .select('id')
+    .single()
+  if (error) {
+    // If duplicate, return existing
+    const { data: existing } = await supabase
+      .from('event_types')
+      .select('id')
+      .eq('slug', slug)
+      .single()
+    if (existing) return { id: (existing as any).id }
+    return { error: error.message }
+  }
+  return { id: (data as any).id }
+}
+
 export async function createEvent(data: {
   name: string
   description: string
-  event_type: string
+  event_type_id: string
   date: string | null
-  imageUrl: string
+  service_ids: string[]
+  images: Array<{ url: string; service_id: string | null; order: number }>
 }): Promise<{ error?: string }> {
   const supabase = await requireAuth()
   const slug = slugify(data.name)
 
   const { data: event, error } = await supabase
     .from('events')
-    .insert({ name: data.name, slug, description: data.description, event_type: data.event_type, date: data.date || null, active: false })
+    .insert({ name: data.name, slug, description: data.description, event_type_id: data.event_type_id, date: data.date || null, active: false })
     .select()
     .single()
 
   if (error || !event) return { error: error?.message ?? 'Error al crear el evento' }
+  const eventId = (event as any).id
 
-  const { error: imgError } = await supabase
-    .from('event_images')
-    .insert({ event_id: event.id, url: data.imageUrl, order: 0 })
+  if (data.service_ids.length > 0) {
+    const { error: svcError } = await supabase
+      .from('event_services')
+      .insert(data.service_ids.map((service_id) => ({ event_id: eventId, service_id })))
+    if (svcError) return { error: svcError.message }
+  }
 
-  if (imgError) return { error: imgError.message }
-
-  revalidateAll()
-  return {}
-}
-
-export async function updateEvent(
-  id: string,
-  data: { name: string; description: string; event_type: string; date: string | null; imageUrl?: string }
-): Promise<{ error?: string }> {
-  const supabase = await requireAuth()
-  const slug = slugify(data.name)
-
-  const { error } = await supabase
-    .from('events')
-    .update({ name: data.name, slug, description: data.description, event_type: data.event_type, date: data.date || null })
-    .eq('id', id)
-
-  if (error) return { error: error.message }
-
-  if (data.imageUrl) {
-    await supabase.from('event_images').delete().eq('event_id', id)
+  if (data.images.length > 0) {
     const { error: imgError } = await supabase
       .from('event_images')
-      .insert({ event_id: id, url: data.imageUrl, order: 0 })
+      .insert(data.images.map((img) => ({ event_id: eventId, url: img.url, service_id: img.service_id, order: img.order })))
     if (imgError) return { error: imgError.message }
   }
 
@@ -163,19 +212,69 @@ export async function updateEvent(
   return {}
 }
 
-export async function deleteEvent(
+export async function updateEvent(
   id: string,
-  imageUrl?: string
+  data: {
+    name: string
+    description: string
+    event_type_id: string
+    date: string | null
+    service_ids: string[]
+    delete_image_ids: string[]
+    new_images: Array<{ url: string; service_id: string | null; order: number }>
+  }
 ): Promise<{ error?: string }> {
   const supabase = await requireAuth()
+  const slug = slugify(data.name)
 
-  if (imageUrl) {
-    const storagePrefix = '/storage/v1/object/public/events-images/'
-    const path = imageUrl.includes(storagePrefix)
-      ? imageUrl.split(storagePrefix)[1]
-      : null
-    if (path) await supabase.storage.from('events-images').remove([path])
+  const { error } = await supabase
+    .from('events')
+    .update({ name: data.name, slug, description: data.description, event_type_id: data.event_type_id, date: data.date || null })
+    .eq('id', id)
+  if (error) return { error: error.message }
+
+  // Replace services
+  await supabase.from('event_services').delete().eq('event_id', id)
+  if (data.service_ids.length > 0) {
+    const { error: svcError } = await supabase
+      .from('event_services')
+      .insert(data.service_ids.map((service_id) => ({ event_id: id, service_id })))
+    if (svcError) return { error: svcError.message }
   }
+
+  // Delete marked images from DB
+  if (data.delete_image_ids.length > 0) {
+    await supabase.from('event_images').delete().in('id', data.delete_image_ids)
+  }
+
+  // Insert new images
+  if (data.new_images.length > 0) {
+    const { data: existing } = await supabase
+      .from('event_images')
+      .select('order')
+      .eq('event_id', id)
+      .order('order', { ascending: false })
+      .limit(1)
+    const baseOrder = existing?.[0] ? (existing[0] as any).order + 1 : 0
+    const { error: imgError } = await supabase
+      .from('event_images')
+      .insert(data.new_images.map((img, i) => ({ event_id: id, url: img.url, service_id: img.service_id, order: baseOrder + i })))
+    if (imgError) return { error: imgError.message }
+  }
+
+  revalidateAll()
+  return {}
+}
+
+export async function deleteEvent(id: string): Promise<{ error?: string }> {
+  const supabase = await requireAuth()
+
+  // Delete all event images from storage
+  const { data: images } = await supabase.from('event_images').select('url').eq('event_id', id)
+  const paths = (images ?? [])
+    .map((img: any) => extractStoragePath(img.url, 'events-images'))
+    .filter(Boolean) as string[]
+  if (paths.length > 0) await supabase.storage.from('events-images').remove(paths)
 
   const { error } = await supabase.from('events').delete().eq('id', id)
   if (error) return { error: error.message }
