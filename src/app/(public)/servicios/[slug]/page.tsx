@@ -83,58 +83,56 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         </div>
       </div>
 
-      {/* ── Stats bar ──────────────────────────────────────────── */}
-      {hasStats && (
+      {/* ── Descripción (barra completa) ───────────────────────── */}
+      {service.description && (
         <div className="border-b border-white/8 bg-s1/40">
-          <div className="px-6 md:px-12 py-5 mx-auto max-w-[1200px]">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {service.base_price && (
-                <div className="bg-s2 rounded-2xl p-4 border border-white/8">
-                  <span className="text-xl block mb-1">💰</span>
-                  <p className="font-bold text-sm leading-tight">{service.base_price}</p>
-                  <p className="text-[11px] text-white/40 mt-1">Precio base</p>
-                </div>
-              )}
-              {service.duration && (
-                <div className="bg-s2 rounded-2xl p-4 border border-white/8">
-                  <span className="text-xl block mb-1">⏱</span>
-                  <p className="font-bold text-sm leading-tight">{service.duration}</p>
-                  <p className="text-[11px] text-white/40 mt-1">Duración</p>
-                </div>
-              )}
-              {service.capacity && (
-                <div className="bg-s2 rounded-2xl p-4 border border-white/8">
-                  <span className="text-xl block mb-1">👥</span>
-                  <p className="font-bold text-sm leading-tight">{service.capacity}</p>
-                  <p className="text-[11px] text-white/40 mt-1">Capacidad</p>
-                </div>
-              )}
-              {service.space_needed && (
-                <div className="bg-s2 rounded-2xl p-4 border border-white/8">
-                  <span className="text-xl block mb-1">📐</span>
-                  <p className="font-bold text-sm leading-tight">{service.space_needed}</p>
-                  <p className="text-[11px] text-white/40 mt-1">Espacio</p>
-                </div>
-              )}
-            </div>
+          <div className="px-6 md:px-12 py-6 mx-auto max-w-[1200px]">
+            <p className="text-[11px] font-extrabold tracking-[0.18em] text-white/30 uppercase mb-3">Descripción</p>
+            <p className="max-w-2xl text-base font-medium leading-relaxed text-white/60">
+              {service.description}
+            </p>
           </div>
         </div>
       )}
 
-      {/* ── Descripción + características | Sidebar ────────────── */}
-      {(service.description || hasFeatures || service.base_price || whatsappHref) && (
+      {/* ── Stats + características | Sidebar ──────────────────── */}
+      {(hasStats || hasFeatures || service.base_price || whatsappHref) && (
         <section className="px-6 md:px-12 py-10 border-b border-white/8">
           <div className="mx-auto max-w-[1200px]">
             <div className="flex flex-col lg:flex-row gap-10 lg:items-start">
 
               {/* Columna principal */}
               <div className="flex-1 min-w-0">
-                {service.description && (
-                  <div className="mb-10">
-                    <p className="text-[11px] font-extrabold tracking-[0.18em] text-white/30 uppercase mb-4">Descripción</p>
-                    <p className="max-w-2xl text-base font-medium leading-relaxed text-white/60">
-                      {service.description}
-                    </p>
+                {hasStats && (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
+                    {service.base_price && (
+                      <div className="bg-s2 rounded-2xl p-4 border border-white/8">
+                        <span className="text-xl block mb-1">💰</span>
+                        <p className="font-bold text-sm leading-tight">{service.base_price}</p>
+                        <p className="text-[11px] text-white/40 mt-1">Precio base</p>
+                      </div>
+                    )}
+                    {service.duration && (
+                      <div className="bg-s2 rounded-2xl p-4 border border-white/8">
+                        <span className="text-xl block mb-1">⏱</span>
+                        <p className="font-bold text-sm leading-tight">{service.duration}</p>
+                        <p className="text-[11px] text-white/40 mt-1">Duración</p>
+                      </div>
+                    )}
+                    {service.capacity && (
+                      <div className="bg-s2 rounded-2xl p-4 border border-white/8">
+                        <span className="text-xl block mb-1">👥</span>
+                        <p className="font-bold text-sm leading-tight">{service.capacity}</p>
+                        <p className="text-[11px] text-white/40 mt-1">Capacidad</p>
+                      </div>
+                    )}
+                    {service.space_needed && (
+                      <div className="bg-s2 rounded-2xl p-4 border border-white/8">
+                        <span className="text-xl block mb-1">📐</span>
+                        <p className="font-bold text-sm leading-tight">{service.space_needed}</p>
+                        <p className="text-[11px] text-white/40 mt-1">Espacio</p>
+                      </div>
+                    )}
                   </div>
                 )}
 
