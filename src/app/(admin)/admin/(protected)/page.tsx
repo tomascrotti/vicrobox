@@ -25,6 +25,7 @@ export default async function AdminPage() {
           servicesBgUrl={settings.services_bg_url}
           eventsBgUrl={settings.events_bg_url}
           whyusBgUrl={settings.whyus_bg_url}
+          whatsappNumber={settings.whatsapp_number}
         />
       </div>
     </main>

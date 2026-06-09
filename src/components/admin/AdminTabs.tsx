@@ -4,12 +4,14 @@ import { useState } from 'react'
 import { ServicesGrid } from './ServicesGrid'
 import { EventsGrid } from './EventsGrid'
 import { WhyUsGrid } from './WhyUsGrid'
+import { SettingsPanel } from './SettingsPanel'
 import type { Service, Event, WhyUsItem, EventTypeRecord } from '@/types'
 
 const TABS = [
   { id: 'servicios', label: 'Servicios' },
   { id: 'eventos', label: 'Eventos' },
   { id: 'whyus', label: '¿Por qué elegirnos?' },
+  { id: 'config', label: 'Configuración' },
 ] as const
 
 type TabId = (typeof TABS)[number]['id']
@@ -22,6 +24,7 @@ export function AdminTabs({
   servicesBgUrl,
   eventsBgUrl,
   whyusBgUrl,
+  whatsappNumber,
 }: {
   services: Service[]
   events: Event[]
@@ -30,6 +33,7 @@ export function AdminTabs({
   servicesBgUrl: string
   eventsBgUrl: string
   whyusBgUrl: string
+  whatsappNumber: string
 }) {
   const [activeTab, setActiveTab] = useState<TabId>('servicios')
 
@@ -54,6 +58,7 @@ export function AdminTabs({
       {activeTab === 'servicios' && <ServicesGrid services={services} bgUrl={servicesBgUrl} />}
       {activeTab === 'eventos' && <EventsGrid events={events} eventTypes={eventTypes} availableServices={services} bgUrl={eventsBgUrl} />}
       {activeTab === 'whyus' && <WhyUsGrid items={whyUsItems} bgUrl={whyusBgUrl} />}
+      {activeTab === 'config' && <SettingsPanel whatsappNumber={whatsappNumber} />}
     </div>
   )
 }
