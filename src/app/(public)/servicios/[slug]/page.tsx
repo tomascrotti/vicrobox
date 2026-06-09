@@ -53,11 +53,17 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         {cover ? (
           <img src={cover} alt={service.name} className="absolute inset-0 w-full h-full object-cover" />
         ) : (
-          <div className="absolute inset-0 bg-s1" />
+          <div
+            className="absolute inset-0"
+            style={{ background: `linear-gradient(135deg, ${service.color}55 0%, rgba(12,12,16,1) 70%)` }}
+          />
         )}
         <div
           className="absolute inset-0"
-          style={{ background: 'linear-gradient(to bottom, rgba(12,12,16,0.2) 0%, rgba(12,12,16,0.4) 40%, rgba(12,12,16,0.95) 100%)' }}
+          style={{ background: cover
+            ? 'linear-gradient(to bottom, rgba(12,12,16,0.2) 0%, rgba(12,12,16,0.4) 40%, rgba(12,12,16,0.95) 100%)'
+            : 'linear-gradient(to bottom, transparent 0%, rgba(12,12,16,0.85) 100%)'
+          }}
         />
 
         {/* Contenido superpuesto */}
@@ -99,10 +105,10 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       {(hasStats || hasFeatures || service.base_price || whatsappHref) && (
         <section className="px-6 md:px-12 py-10 border-b border-white/8">
           <div className="mx-auto max-w-[1200px]">
-            <div className="flex flex-col lg:flex-row gap-10 lg:items-start">
+            <div className={`flex gap-10 lg:items-start ${hasStats || hasFeatures ? 'flex-col lg:flex-row' : 'flex-col items-center'}`}>
 
-              {/* Columna principal */}
-              <div className="flex-1 min-w-0">
+              {/* Columna principal — solo si hay contenido */}
+              <div className={hasStats || hasFeatures ? 'flex-1 min-w-0' : 'hidden'}>
                 {hasStats && (
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
                     {service.base_price && (
@@ -156,7 +162,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
 
               {/* Sidebar */}
               {(service.base_price || whatsappHref) && (
-                <aside className="lg:w-[300px] flex-shrink-0">
+                <aside className={hasStats || hasFeatures ? 'lg:w-[300px] flex-shrink-0' : 'w-full max-w-sm'}>
                   <div className="bg-s2 rounded-2xl p-6 border border-white/8 lg:sticky lg:top-24">
                     {service.base_price && (
                       <div className="mb-6">
