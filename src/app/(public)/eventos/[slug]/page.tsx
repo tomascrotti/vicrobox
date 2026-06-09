@@ -18,7 +18,7 @@ export default async function EventPage({ params }: { params: Promise<{ slug: st
     (img) => !img.service_id || !services.find((s) => s.id === img.service_id)
   )
 
-  const cover = allImages[0]?.url
+  const cover = (allImages.find((i) => i.is_cover) ?? allImages[0])?.url
 
   return (
     <main className="min-h-screen bg-bg-main text-white">

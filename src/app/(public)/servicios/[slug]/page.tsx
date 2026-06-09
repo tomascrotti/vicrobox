@@ -17,7 +17,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
     (e.services ?? []).some((s) => s.id === service.id)
   )
 
-  const cover = service.images?.[0]?.url
+  const cover = (service.images?.find((i) => i.is_cover) ?? service.images?.[0])?.url
 
   return (
     <main className="min-h-screen bg-bg-main text-white">

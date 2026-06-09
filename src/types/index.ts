@@ -19,6 +19,7 @@ export type ServiceImage = {
   service_id: string
   url: string
   order: number
+  is_cover: boolean
   created_at: string
 }
 
@@ -48,6 +49,7 @@ export type EventImage = {
   event_id: string
   url: string
   order: number
+  is_cover: boolean
   service_id?: string | null
   created_at: string
 }

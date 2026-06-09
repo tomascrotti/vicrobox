@@ -43,7 +43,7 @@ export async function createService(data: {
 
   const { error: imgError } = await supabase
     .from('service_images')
-    .insert({ service_id: service.id, url: data.imageUrl, order: 0 })
+    .insert({ service_id: service.id, url: data.imageUrl, order: 0, is_cover: true })
 
   if (imgError) return { error: imgError.message }
 
@@ -73,7 +73,7 @@ export async function updateService(
     await supabase.from('service_images').delete().eq('service_id', id)
     const { error: imgError } = await supabase
       .from('service_images')
-      .insert({ service_id: id, url: data.imageUrl, order: 0 })
+      .insert({ service_id: id, url: data.imageUrl, order: 0, is_cover: true })
     if (imgError) return { error: imgError.message }
   }
 
@@ -186,7 +186,7 @@ export async function createEvent(data: {
   event_type_id: string
   date: string | null
   service_ids: string[]
-  images: Array<{ url: string; service_id: string | null; order: number }>
+  images: Array<{ url: string; service_id: string | null; order: number; is_cover: boolean }>
 }): Promise<{ error?: string }> {
   const supabase = await requireAuth()
   const slug = slugify(data.name)
@@ -210,7 +210,7 @@ export async function createEvent(data: {
   if (data.images.length > 0) {
     const { error: imgError } = await supabase
       .from('event_images')
-      .insert(data.images.map((img) => ({ event_id: eventId, url: img.url, service_id: img.service_id, order: img.order })))
+      .insert(data.images.map((img) => ({ event_id: eventId, url: img.url, service_id: img.service_id, order: img.order, is_cover: img.is_cover })))
     if (imgError) return { error: imgError.message }
   }
 
@@ -227,7 +227,8 @@ export async function updateEvent(
     date: string | null
     service_ids: string[]
     delete_image_ids: string[]
-    new_images: Array<{ url: string; service_id: string | null; order: number }>
+    new_images: Array<{ url: string; service_id: string | null; order: number; is_cover: boolean }>
+    cover_image_id?: string | null
   }
 ): Promise<{ error?: string }> {
   const supabase = await requireAuth()
@@ -251,6 +252,14 @@ export async function updateEvent(
   // Delete marked images from DB
   if (data.delete_image_ids.length > 0) {
     await supabase.from('event_images').delete().in('id', data.delete_image_ids)
+  }
+
+  // Update cover on existing images
+  if (data.cover_image_id !== undefined) {
+    await supabase.from('event_images').update({ is_cover: false }).eq('event_id', id)
+    if (data.cover_image_id) {
+      await supabase.from('event_images').update({ is_cover: true }).eq('id', data.cover_image_id)
+    }
   }
 
   // Insert new images

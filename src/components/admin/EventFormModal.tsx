@@ -9,7 +9,7 @@ type Props =
   | { mode: 'create'; event?: never; eventTypes: EventTypeRecord[]; availableServices: Service[]; onClose: () => void }
   | { mode: 'edit'; event: Event; eventTypes: EventTypeRecord[]; availableServices: Service[]; onClose: () => void }
 
-type PendingUpload = { file: File; preview: string; serviceId: string | null }
+type PendingUpload = { file: File; preview: string; serviceId: string | null; isCover: boolean }
 type ExistingImage = EventImage & { markedForDeletion: boolean }
 
 export function EventFormModal({ mode, event, eventTypes: initialTypes, availableServices, onClose }: Props) {
@@ -29,6 +29,11 @@ export function EventFormModal({ mode, event, eventTypes: initialTypes, availabl
     (event?.images ?? []).map((img) => ({ ...img, markedForDeletion: false }))
   )
   const [pendingUploads, setPendingUploads] = useState<PendingUpload[]>([])
+  // Track which image is the cover: existing image id OR pending upload index
+  const [coverExistingId, setCoverExistingId] = useState<string | null>(
+    event?.images?.find((i) => i.is_cover)?.id ?? event?.images?.[0]?.id ?? null
+  )
+  const [coverPendingIdx, setCoverPendingIdx] = useState<number | null>(null)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -68,20 +73,44 @@ export function EventFormModal({ mode, event, eventTypes: initialTypes, availabl
 
   function markImageForDeletion(imgId: string) {
     setExistingImages((prev) => prev.map((img) => img.id === imgId ? { ...img, markedForDeletion: true } : img))
+    if (coverExistingId === imgId) setCoverExistingId(null)
   }
 
   function removeUpload(idx: number) {
-    setPendingUploads((prev) => prev.filter((_, i) => i !== idx))
+    setPendingUploads((prev) => {
+      const next = prev.filter((_, i) => i !== idx)
+      return next
+    })
+    if (coverPendingIdx === idx) setCoverPendingIdx(null)
+    else if (coverPendingIdx !== null && coverPendingIdx > idx) setCoverPendingIdx(coverPendingIdx - 1)
+  }
+
+  function selectCoverExisting(id: string) {
+    setCoverExistingId(id)
+    setCoverPendingIdx(null)
+  }
+
+  function selectCoverPending(idx: number) {
+    setCoverPendingIdx(idx)
+    setCoverExistingId(null)
   }
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? [])
-    const newUploads: PendingUpload[] = files.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-      serviceId: activeImageTab,
-    }))
-    setPendingUploads((prev) => [...prev, ...newUploads])
+    setPendingUploads((prev) => {
+      const newUploads: PendingUpload[] = files.map((file) => ({
+        file,
+        preview: URL.createObjectURL(file),
+        serviceId: activeImageTab,
+        isCover: false,
+      }))
+      const next = [...prev, ...newUploads]
+      // Auto-set cover to first pending if no cover exists yet
+      if (coverExistingId === null && coverPendingIdx === null && next.length > 0) {
+        setCoverPendingIdx(0)
+      }
+      return next
+    })
     e.target.value = ''
   }
 
@@ -113,13 +142,17 @@ export function EventFormModal({ mode, event, eventTypes: initialTypes, availabl
     setUploading(true)
     try {
       // Upload new files
-      const uploadedImages: Array<{ url: string; service_id: string | null; order: number }> = []
+      const uploadedImages: Array<{ url: string; service_id: string | null; order: number; is_cover: boolean }> = []
       for (let i = 0; i < pendingUploads.length; i++) {
         const url = await uploadFile(pendingUploads[i].file)
-        uploadedImages.push({ url, service_id: pendingUploads[i].serviceId, order: i })
+        uploadedImages.push({ url, service_id: pendingUploads[i].serviceId, order: i, is_cover: coverPendingIdx === i })
       }
 
       if (mode === 'create') {
+        // If no cover set, default first image
+        if (uploadedImages.length > 0 && !uploadedImages.some((i) => i.is_cover)) {
+          uploadedImages[0].is_cover = true
+        }
         const result = await createEvent({
           name, description, event_type_id: eventTypeId, date: date || null,
           service_ids: selectedServiceIds,
@@ -131,11 +164,15 @@ export function EventFormModal({ mode, event, eventTypes: initialTypes, availabl
         const toDelete = existingImages.filter((img) => img.markedForDeletion)
         await Promise.all(toDelete.map((img) => deleteStorageFile(img.url)))
 
+        // Determine cover for existing images (null if cover is a new pending upload)
+        const coverForExisting = coverPendingIdx !== null ? null : (coverExistingId ?? undefined)
+
         const result = await updateEvent(event.id, {
           name, description, event_type_id: eventTypeId, date: date || null,
           service_ids: selectedServiceIds,
           delete_image_ids: toDelete.map((img) => img.id),
           new_images: uploadedImages,
+          cover_image_id: coverForExisting,
         })
         if (result.error) { setError(result.error); return }
       }
@@ -254,33 +291,60 @@ export function EventFormModal({ mode, event, eventTypes: initialTypes, availabl
             {/* Tab content */}
             <div className="flex flex-wrap gap-2 min-h-[80px]">
               {/* Existing images for this tab */}
-              {visibleExisting.filter((img) => img.service_id === currentTab).map((img) => (
-                <div key={img.id} className="relative w-20 h-20 rounded-lg overflow-hidden border border-white/10 group">
-                  <img src={img.url} alt="" className="absolute inset-0 w-full h-full object-cover" />
-                  <button type="button" onClick={() => markImageForDeletion(img.id)}
-                    className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                    aria-label="Eliminar imagen"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
-                    </svg>
-                  </button>
-                </div>
-              ))}
+              {visibleExisting.filter((img) => img.service_id === currentTab).map((img) => {
+                const isCover = coverExistingId === img.id && coverPendingIdx === null
+                return (
+                  <div key={img.id} className={`relative w-20 h-20 rounded-lg overflow-hidden border group ${isCover ? 'border-yellow-400' : 'border-white/10'}`}>
+                    <img src={img.url} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                    {/* Cover star */}
+                    <button type="button" onClick={() => selectCoverExisting(img.id)}
+                      className={`absolute top-1 left-1 z-10 p-0.5 rounded transition-opacity ${isCover ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                      aria-label="Portada"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill={isCover ? '#facc15' : 'none'} stroke={isCover ? '#facc15' : 'white'} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                      </svg>
+                    </button>
+                    {/* Delete */}
+                    <button type="button" onClick={() => markImageForDeletion(img.id)}
+                      className="absolute bottom-0 inset-x-0 bg-black/60 flex items-center justify-center py-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-label="Eliminar imagen"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="3 6 5 6 21 6" /><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
+                      </svg>
+                    </button>
+                  </div>
+                )
+              })}
               {/* Pending uploads for this tab */}
-              {pendingUploads.map((u, idx) => u.serviceId === currentTab ? (
-                <div key={idx} className="relative w-20 h-20 rounded-lg overflow-hidden border border-orange/40 group">
-                  <img src={u.preview} alt="" className="absolute inset-0 w-full h-full object-cover" />
-                  <button type="button" onClick={() => removeUpload(idx)}
-                    className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                    aria-label="Quitar imagen"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M18 6L6 18M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-              ) : null)}
+              {pendingUploads.map((u, idx) => {
+                if (u.serviceId !== currentTab) return null
+                const isCover = coverPendingIdx === idx
+                return (
+                  <div key={idx} className={`relative w-20 h-20 rounded-lg overflow-hidden border group ${isCover ? 'border-yellow-400' : 'border-orange/40'}`}>
+                    <img src={u.preview} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                    {/* Cover star */}
+                    <button type="button" onClick={() => selectCoverPending(idx)}
+                      className={`absolute top-1 left-1 z-10 p-0.5 rounded transition-opacity ${isCover ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                      aria-label="Portada"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill={isCover ? '#facc15' : 'none'} stroke={isCover ? '#facc15' : 'white'} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                      </svg>
+                    </button>
+                    {/* Remove */}
+                    <button type="button" onClick={() => removeUpload(idx)}
+                      className="absolute bottom-0 inset-x-0 bg-black/60 flex items-center justify-center py-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      aria-label="Quitar imagen"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M18 6L6 18M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                )
+              })}
               {/* Upload button */}
               <button type="button" onClick={() => fileInputRef.current?.click()}
                 className="w-20 h-20 rounded-lg border border-dashed border-white/20 flex items-center justify-center hover:border-white/40 text-white/30 hover:text-white/60 transition-colors flex-shrink-0"
@@ -291,7 +355,7 @@ export function EventFormModal({ mode, event, eventTypes: initialTypes, availabl
               </button>
             </div>
             <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/webp" multiple onChange={handleFileChange} className="hidden" />
-            <p className="text-[11px] text-white/30">Las imágenes del tab activo se asocian a ese servicio</p>
+            <p className="text-[11px] text-white/30">Tab activo = servicio asociado. ★ = portada del evento</p>
           </div>
 
           {error && <p className="text-sm text-red-400">{error}</p>}
