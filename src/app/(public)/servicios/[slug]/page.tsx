@@ -49,7 +49,7 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
     <main className="min-h-screen bg-bg-main text-white">
 
       {/* ── Hero con título superpuesto ──────────────────────── */}
-      <div className="relative w-full h-[55vh] min-h-[380px] overflow-hidden">
+      <div className="relative w-full h-[65vh] min-h-[460px] overflow-hidden">
         {cover ? (
           <img src={cover} alt={service.name} className="absolute inset-0 w-full h-full object-cover" />
         ) : (
@@ -72,10 +72,10 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
               </svg>
               Servicios
             </a>
-            <span className="mb-2 block text-[11px] font-extrabold tracking-[0.22em] text-teal uppercase">
+            <span className="mb-3 block text-[13px] font-extrabold tracking-[0.25em] text-teal uppercase drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]">
               Nuestros Servicios
             </span>
-            <h1 className="font-display text-4xl leading-tight md:text-5xl mb-2">{service.name}</h1>
+            <h1 className="font-display text-5xl leading-tight md:text-6xl mb-2 drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)]">{service.name}</h1>
             {service.tagline && (
               <p className="text-base font-medium" style={{ color: service.color }}>{service.tagline}</p>
             )}
