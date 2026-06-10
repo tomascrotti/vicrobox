@@ -187,7 +187,21 @@ export function QuoteForm({ services, whatsappNumber, standalone }: QuoteFormPro
         <p className="text-center text-white/55 mb-10">
           Contanos los detalles y te respondemos por WhatsApp con una propuesta a medida.
         </p>
-        {form}
+        <div
+          className="rounded-2xl p-7 md:p-9"
+          style={{
+            background: 'rgba(28,25,34,0.85)',
+            border: '1.5px solid rgba(255,255,255,0.07)',
+            boxShadow: '0 0 60px rgba(240,120,32,0.07), 0 0 0 0 transparent',
+            backdropFilter: 'blur(4px)',
+          }}
+        >
+          <div
+            className="h-[2px] w-full rounded-full mb-8"
+            style={{ background: 'linear-gradient(90deg, #F07820, #00C8B4, rgba(255,255,255,0))' }}
+          />
+          {form}
+        </div>
       </div>
     </section>
   )
