@@ -13,7 +13,7 @@ function randomSparkles(count: number): Sparkle[] {
     color: SPARKLE_COLORS[Math.floor(Math.random() * SPARKLE_COLORS.length)],
     size: `${10 + Math.round(Math.random() * 8)}px`,
     delay: `${(Math.random() * 4).toFixed(1)}s`,
-    duration: '5s',
+    duration: '7s',
   }))
 }
 
