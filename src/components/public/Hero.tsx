@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { SparkleField } from '@/components/public/SparkleField'
+import { LensIcon } from '@/components/ui/LensIcon'
 
 const PRE_LETTERS = [
   { letter: 'V', color: '#F8BD19' },
@@ -31,19 +32,7 @@ export function Hero() {
             </span>
           ))}
           <span className="relative inline-flex items-center" style={{ height: '1em' }}>
-            <svg viewBox="0 0 90 90" style={{ width: '0.84em', height: '0.84em' }} aria-hidden="true">
-              <circle cx="45" cy="45" r="44" fill="#111" />
-              <circle cx="45" cy="45" r="42" fill="none" stroke="#222" strokeWidth="2" />
-              <circle cx="45" cy="45" r="37" fill="#0A0A0A" />
-              <circle cx="45" cy="45" r="33" fill="none" stroke="#1A1A1A" strokeWidth="1.5" />
-              <circle cx="45" cy="45" r="27" fill="none" stroke="#161616" strokeWidth="1" />
-              <circle cx="45" cy="45" r="21" fill="#060606" />
-              <circle cx="45" cy="45" r="19" fill="none" stroke="#0F0F0F" strokeWidth="1" />
-              <circle cx="45" cy="45" r="11" fill="#030303" />
-              <ellipse cx="57" cy="30" rx="12" ry="10" fill="white" opacity="0.88" transform="rotate(-18 57 30)" />
-              <ellipse cx="57" cy="30" rx="7" ry="5.5" fill="white" transform="rotate(-18 57 30)" />
-              <circle cx="33" cy="58" r="2.5" fill="white" opacity="0.18" />
-            </svg>
+            <LensIcon variant="mono" className="w-[0.84em] h-[0.84em]" />
             <span
               className="absolute -top-[0.13em] -right-[0.14em] text-white"
               style={{ fontSize: '0.27em', filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.9))', animation: 'shutterflash 3.6s ease-in-out infinite', animationFillMode: 'backwards' }}

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Wordmark } from '@/components/ui/Wordmark'
+import { LensIcon } from '@/components/ui/LensIcon'
 
 const NAV_LINK_CLASS =
   'hidden whitespace-nowrap text-sm font-bold text-white/70 transition-colors hover:text-white min-[760px]:inline'
@@ -23,7 +24,8 @@ export function Header() {
         solid ? 'border-white/8 bg-bg-main/90 backdrop-blur-md' : 'border-transparent bg-transparent'
       }`}
     >
-      <Link href="/" className="flex flex-shrink-0 items-center font-display text-2xl" aria-label="Vicrobox — Inicio">
+      <Link href="/" className="flex flex-shrink-0 items-center gap-2 font-display text-2xl" aria-label="Vicrobox — Inicio">
+        <LensIcon variant="tri" className="w-7 h-7" />
         <Wordmark />
       </Link>
       <nav className="flex items-center gap-6">
