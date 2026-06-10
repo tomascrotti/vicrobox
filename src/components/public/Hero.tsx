@@ -76,7 +76,10 @@ export function Hero() {
               <ellipse cx="57" cy="30" rx="7" ry="5.5" fill="white" transform="rotate(-18 57 30)" />
               <circle cx="33" cy="58" r="2.5" fill="white" opacity="0.18" />
             </svg>
-            <span className="absolute -top-[0.13em] -right-[0.14em] text-teal" style={{ fontSize: '0.27em', filter: 'drop-shadow(0 0 6px rgba(0,184,152,0.8))' }}>
+            <span
+              className="absolute -top-[0.13em] -right-[0.14em] text-white"
+              style={{ fontSize: '0.27em', filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.9))', animation: 'shutterflash 3.6s ease-in-out infinite' }}
+            >
               ✦
             </span>
           </span>
