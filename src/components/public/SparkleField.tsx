@@ -2,44 +2,47 @@
 
 import { useEffect, useState } from 'react'
 
-type Flash = { left: string; top: string; size: string; delay: string; duration: string; opacity: number }
+type Sparkle = { left: string; top: string; color: string; size: string; delay: string; duration: string }
 
-function randomFlashes(count: number): Flash[] {
+const SPARKLE_COLORS = ['#00B898', '#F5C420', '#F07820', '#28C44A', '#1A52C8', '#EA7C03', '#F8BD19', '#079684']
+
+function randomSparkles(count: number): Sparkle[] {
   return Array.from({ length: count }, () => ({
     left: `${Math.round(Math.random() * 96)}%`,
     top: `${Math.round(Math.random() * 92)}%`,
-    size: `${10 + Math.round(Math.random() * 16)}px`,
-    delay: `${(Math.random() * 6).toFixed(1)}s`,
-    duration: `${(2.4 + Math.random() * 3.6).toFixed(1)}s`,
-    opacity: 0.6 + Math.random() * 0.4,
+    color: SPARKLE_COLORS[Math.floor(Math.random() * SPARKLE_COLORS.length)],
+    size: `${10 + Math.round(Math.random() * 8)}px`,
+    delay: `${(Math.random() * 4).toFixed(1)}s`,
+    duration: '5s',
   }))
 }
 
 export function SparkleField({ count = 24, className = 'absolute inset-0' }: { count?: number; className?: string }) {
-  const [flashes, setFlashes] = useState<Flash[]>([])
+  const [sparkles, setSparkles] = useState<Sparkle[]>([])
 
   useEffect(() => {
-    setFlashes(randomFlashes(count))
+    setSparkles(randomSparkles(count))
   }, [count])
 
   return (
     <div className={`${className} pointer-events-none`} aria-hidden="true">
-      {flashes.map((f, i) => (
+      {sparkles.map((s, i) => (
         <span
           key={i}
-          className="absolute rounded-full bg-white"
+          className="absolute"
           style={{
-            left: f.left,
-            top: f.top,
-            width: f.size,
-            height: f.size,
-            opacity: f.opacity,
-            boxShadow: `0 0 ${parseInt(f.size) * 4}px ${parseInt(f.size) * 1.5}px rgba(255,255,255,0.9)`,
-            animation: `camflash ${f.duration} ease-out infinite`,
-            animationDelay: f.delay,
+            left: s.left,
+            top: s.top,
+            color: s.color,
+            fontSize: s.size,
+            animation: `floatsp ${s.duration} ease-in-out infinite`,
+            animationDelay: s.delay,
             animationFillMode: 'backwards',
+            filter: `drop-shadow(0 0 6px ${s.color}99)`,
           }}
-        />
+        >
+          ✦
+        </span>
       ))}
     </div>
   )
