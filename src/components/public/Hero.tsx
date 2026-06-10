@@ -46,7 +46,7 @@ export function Hero() {
             </svg>
             <span
               className="absolute -top-[0.13em] -right-[0.14em] text-white"
-              style={{ fontSize: '0.27em', filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.9))', animation: 'shutterflash 3.6s ease-in-out infinite' }}
+              style={{ fontSize: '0.27em', filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.9))', animation: 'shutterflash 3.6s ease-in-out infinite', animationFillMode: 'backwards' }}
             >
               ✦
             </span>

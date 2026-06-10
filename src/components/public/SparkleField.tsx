@@ -37,6 +37,7 @@ export function SparkleField({ count = 24, className = 'absolute inset-0' }: { c
             fontSize: s.size,
             animation: `floatsp ${s.duration} ease-in-out infinite`,
             animationDelay: s.delay,
+            animationFillMode: 'backwards',
             filter: `drop-shadow(0 0 10px ${s.color})`,
           }}
         >
