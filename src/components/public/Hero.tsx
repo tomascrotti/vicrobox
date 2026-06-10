@@ -15,7 +15,7 @@ function randomSparkles(): Sparkle[] {
     color: SPARKLE_COLORS[Math.floor(Math.random() * SPARKLE_COLORS.length)],
     size: `${10 + Math.round(Math.random() * 8)}px`,
     delay: `${(Math.random() * 4).toFixed(1)}s`,
-    duration: `${(2.4 + Math.random() * 1.8).toFixed(1)}s`,
+    duration: '3.2s',
   }))
 }
 
