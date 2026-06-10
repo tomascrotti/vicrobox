@@ -16,7 +16,7 @@ const nunito = Nunito({
 })
 
 export const metadata: Metadata = {
-  title: 'Vicrobox Entretenimiento — Fotocabinas y más',
+  title: 'Vicrobox',
   description:
     'Fotocabinas, stand de glitter, cabina espejada, túnel LED y más para tu evento en Buenos Aires.',
   openGraph: {
