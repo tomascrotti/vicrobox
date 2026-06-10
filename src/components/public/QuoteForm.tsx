@@ -15,6 +15,12 @@ type QuoteFormProps = {
 const inputClass =
   'w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-orange focus:bg-white/8 transition-colors'
 
+function todayISO() {
+  const d = new Date()
+  const tz = d.getTimezoneOffset() * 60000
+  return new Date(d.getTime() - tz).toISOString().slice(0, 10)
+}
+
 export function QuoteForm({ services, whatsappNumber, standalone }: QuoteFormProps) {
   const formId = useId()
   const [name, setName] = useState('')
@@ -36,6 +42,11 @@ export function QuoteForm({ services, whatsappNumber, standalone }: QuoteFormPro
 
     if (!name || selectedServices.length === 0 || !date || guests === '' || !location) {
       setError('Completá los campos obligatorios para continuar.')
+      return
+    }
+
+    if (date < todayISO()) {
+      setError('Elegí una fecha igual o posterior a hoy.')
       return
     }
 
@@ -104,6 +115,7 @@ export function QuoteForm({ services, whatsappNumber, standalone }: QuoteFormPro
             id={`${formId}-date`}
             type="date"
             value={date}
+            min={todayISO()}
             onChange={(e) => setDate(e.target.value)}
             className={inputClass}
           />
