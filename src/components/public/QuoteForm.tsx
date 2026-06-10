@@ -2,6 +2,7 @@
 
 import { useId, useState, type FormEvent } from 'react'
 import { buildWhatsAppURL } from '@/lib/whatsapp'
+import { SparkleField } from '@/components/public/SparkleField'
 import type { QuoteFormData, Service } from '@/types'
 
 type QuoteFormProps = {
@@ -181,8 +182,9 @@ export function QuoteForm({ services, whatsappNumber, standalone }: QuoteFormPro
 
   // Section mode: used as a homepage CTA section
   return (
-    <section id="cta" className="py-24 px-6 bg-s1">
-      <div className="max-w-xl mx-auto">
+    <section id="cta" className="relative py-24 px-6 bg-s1 overflow-hidden">
+      <SparkleField count={18} />
+      <div className="relative max-w-xl mx-auto">
         <h2 className="font-display text-3xl md:text-4xl text-center mb-3">Cotiza tu evento</h2>
         <p className="text-center text-white/55 mb-10">
           Contanos los detalles y te respondemos por WhatsApp con una propuesta a medida.
