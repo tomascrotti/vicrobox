@@ -1,18 +1,18 @@
 import Link from 'next/link'
 
 const SPARKLES = [
-  { left: '7%', top: '28%', color: '#00B898', size: '18px', delay: '0s' },
-  { left: '14%', top: '62%', color: '#00B898', size: '12px', delay: '1.3s' },
-  { left: '23%', top: '44%', color: '#F5C420', size: '14px', delay: '2.6s' },
-  { left: '48%', top: '18%', color: '#F07820', size: '13px', delay: '0.5s' },
-  { left: '77%', top: '28%', color: '#00B898', size: '16px', delay: '0.9s' },
-  { left: '86%', top: '55%', color: '#28C44A', size: '12px', delay: '2.0s' },
-  { left: '92%', top: '38%', color: '#F5C420', size: '11px', delay: '3.2s' },
-  { left: '36%', top: '78%', color: '#00B898', size: '10px', delay: '1.7s' },
-  { left: '65%', top: '72%', color: '#1A52C8', size: '11px', delay: '0.3s' },
-  { left: '30%', top: '12%', color: '#EA7C03', size: '13px', delay: '1.1s' },
-  { left: '58%', top: '50%', color: '#F8BD19', size: '10px', delay: '2.3s' },
-  { left: '18%', top: '85%', color: '#079684', size: '14px', delay: '0.7s' },
+  { left: '7%', top: '28%', color: '#00B898', size: '18px', delay: '0s', duration: '2.6s' },
+  { left: '14%', top: '62%', color: '#00B898', size: '12px', delay: '1.3s', duration: '3.4s' },
+  { left: '23%', top: '44%', color: '#F5C420', size: '14px', delay: '2.6s', duration: '2.9s' },
+  { left: '48%', top: '18%', color: '#F07820', size: '13px', delay: '0.5s', duration: '3.8s' },
+  { left: '77%', top: '28%', color: '#00B898', size: '16px', delay: '0.9s', duration: '2.4s' },
+  { left: '86%', top: '55%', color: '#28C44A', size: '12px', delay: '2.0s', duration: '3.1s' },
+  { left: '92%', top: '38%', color: '#F5C420', size: '11px', delay: '3.2s', duration: '4.0s' },
+  { left: '36%', top: '78%', color: '#00B898', size: '10px', delay: '1.7s', duration: '2.7s' },
+  { left: '65%', top: '72%', color: '#1A52C8', size: '11px', delay: '0.3s', duration: '3.6s' },
+  { left: '30%', top: '12%', color: '#EA7C03', size: '13px', delay: '1.1s', duration: '2.5s' },
+  { left: '58%', top: '50%', color: '#F8BD19', size: '10px', delay: '2.3s', duration: '3.3s' },
+  { left: '18%', top: '85%', color: '#079684', size: '14px', delay: '0.7s', duration: '4.2s' },
 ]
 
 const PRE_LETTERS = [
@@ -35,14 +35,15 @@ export function Hero() {
         {SPARKLES.map((s, i) => (
           <span
             key={i}
-            className="absolute animate-[floatsp_5s_ease-in-out_infinite]"
+            className="absolute"
             style={{
               left: s.left,
               top: s.top,
               color: s.color,
               fontSize: s.size,
+              animation: `floatsp ${s.duration} ease-in-out infinite`,
               animationDelay: s.delay,
-              filter: `drop-shadow(0 0 6px ${s.color}99)`,
+              filter: `drop-shadow(0 0 10px ${s.color})`,
             }}
           >
             ✦
