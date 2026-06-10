@@ -8,10 +8,10 @@ function randomFlashes(count: number): Flash[] {
   return Array.from({ length: count }, () => ({
     left: `${Math.round(Math.random() * 96)}%`,
     top: `${Math.round(Math.random() * 92)}%`,
-    size: `${40 + Math.round(Math.random() * 90)}px`,
-    delay: `${(Math.random() * 5).toFixed(1)}s`,
-    duration: `${(2.6 + Math.random() * 2).toFixed(1)}s`,
-    opacity: 0.18 + Math.random() * 0.22,
+    size: `${10 + Math.round(Math.random() * 16)}px`,
+    delay: `${(Math.random() * 6).toFixed(1)}s`,
+    duration: `${(2.4 + Math.random() * 3.6).toFixed(1)}s`,
+    opacity: 0.6 + Math.random() * 0.4,
   }))
 }
 
@@ -27,14 +27,15 @@ export function SparkleField({ count = 24, className = 'absolute inset-0' }: { c
       {flashes.map((f, i) => (
         <span
           key={i}
-          className="absolute rounded-full"
+          className="absolute rounded-full bg-white"
           style={{
             left: f.left,
             top: f.top,
             width: f.size,
             height: f.size,
-            background: `radial-gradient(circle, rgba(255,255,255,${f.opacity}) 0%, transparent 70%)`,
-            animation: `shutterflash-bg ${f.duration} ease-in-out infinite`,
+            opacity: f.opacity,
+            boxShadow: `0 0 ${parseInt(f.size) * 4}px ${parseInt(f.size) * 1.5}px rgba(255,255,255,0.9)`,
+            animation: `camflash ${f.duration} ease-out infinite`,
             animationDelay: f.delay,
             animationFillMode: 'backwards',
           }}
