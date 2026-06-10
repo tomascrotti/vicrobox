@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 type Sparkle = { left: string; top: string; color: string; size: string; delay: string; duration: string }
 
 const SPARKLE_COLORS = ['#00B898', '#F5C420', '#F07820', '#28C44A', '#1A52C8', '#EA7C03', '#F8BD19', '#079684']
-const SPARKLE_COUNT = 12
+const SPARKLE_COUNT = 24
 
 function randomSparkles(): Sparkle[] {
   return Array.from({ length: SPARKLE_COUNT }, () => ({
