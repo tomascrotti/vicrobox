@@ -49,12 +49,6 @@
   44% { opacity: 0; transform: scale(0.6); }
 }
 
-@keyframes floatsp {
-  0%, 88% { opacity: 0; transform: scale(0.4); }
-  92% { opacity: 1; transform: scale(1.5); }
-  100% { opacity: 0; transform: scale(0.6); }
-}
-
 @keyframes bob {
   0%, 100% { transform: translateX(-50%) translateY(0); }
   50% { transform: translateX(-50%) translateY(7px); }
