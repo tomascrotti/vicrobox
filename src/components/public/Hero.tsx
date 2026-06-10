@@ -1,23 +1,5 @@
-'use client'
-
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-
-type Sparkle = { left: string; top: string; color: string; size: string; delay: string; duration: string }
-
-const SPARKLE_COLORS = ['#00B898', '#F5C420', '#F07820', '#28C44A', '#1A52C8', '#EA7C03', '#F8BD19', '#079684']
-const SPARKLE_COUNT = 24
-
-function randomSparkles(): Sparkle[] {
-  return Array.from({ length: SPARKLE_COUNT }, () => ({
-    left: `${Math.round(Math.random() * 96)}%`,
-    top: `${Math.round(Math.random() * 92)}%`,
-    color: SPARKLE_COLORS[Math.floor(Math.random() * SPARKLE_COLORS.length)],
-    size: `${10 + Math.round(Math.random() * 8)}px`,
-    delay: `${(Math.random() * 4).toFixed(1)}s`,
-    duration: '3.2s',
-  }))
-}
+import { SparkleField } from '@/components/public/SparkleField'
 
 const PRE_LETTERS = [
   { letter: 'V', color: '#F8BD19' },
@@ -29,37 +11,13 @@ const PRE_LETTERS = [
 ]
 
 export function Hero() {
-  const [sparkles, setSparkles] = useState<Sparkle[]>([])
-
-  useEffect(() => {
-    setSparkles(randomSparkles())
-  }, [])
-
   return (
     <section
       id="inicio"
       className="relative min-h-screen flex items-center justify-center text-center overflow-hidden px-6 pt-32 pb-20"
       style={{ background: 'radial-gradient(ellipse 80% 55% at 50% 65%, rgba(240,120,32,0.07) 0%, transparent 65%)' }}
     >
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        {sparkles.map((s, i) => (
-          <span
-            key={i}
-            className="absolute"
-            style={{
-              left: s.left,
-              top: s.top,
-              color: s.color,
-              fontSize: s.size,
-              animation: `floatsp ${s.duration} ease-in-out infinite`,
-              animationDelay: s.delay,
-              filter: `drop-shadow(0 0 10px ${s.color})`,
-            }}
-          >
-            ✦
-          </span>
-        ))}
-      </div>
+      <SparkleField count={24} />
 
       <div className="relative z-10 max-w-3xl">
         <span className="block text-xs font-extrabold tracking-[0.24em] uppercase text-teal mb-5">

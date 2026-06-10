@@ -1,6 +1,7 @@
 import { getActiveServices } from '@/lib/data/services'
 import { getSettings } from '@/lib/data/settings'
 import { QuoteForm } from '@/components/public/QuoteForm'
+import { SparkleField } from '@/components/public/SparkleField'
 
 export default async function CotizarPage() {
   const [services, settings] = await Promise.all([
@@ -24,9 +25,7 @@ export default async function CotizarPage() {
       />
 
       {/* ── Decorative sparkles ────────────────────────────────── */}
-      <span className="pointer-events-none absolute top-32 right-[8%] text-4xl text-orange/10 select-none">✦</span>
-      <span className="pointer-events-none absolute bottom-40 left-[5%] text-6xl text-teal/8 select-none">✦</span>
-      <span className="pointer-events-none absolute top-[55%] right-[3%] text-2xl text-orange/8 select-none">✦</span>
+      <SparkleField count={18} />
 
       <div className="relative px-6 md:px-12 pt-28 pb-20">
         <div className="mx-auto max-w-[680px]">

@@ -1,5 +1,6 @@
 import { getActiveServices } from '@/lib/data/services'
 import { ServiceCard } from '@/components/public/ServiceCard'
+import { SparkleField } from '@/components/public/SparkleField'
 
 export default async function ServiciosPage() {
   const services = await getActiveServices()
@@ -8,13 +9,18 @@ export default async function ServiciosPage() {
     <main className="min-h-screen bg-bg-main text-white">
 
       {/* ── Header ────────────────────────────────────────────── */}
-      <section className="relative px-6 md:px-12 pt-24 pb-10 border-b border-white/8 overflow-hidden">
+      <section className="relative px-6 md:px-12 pt-24 pb-16 overflow-hidden">
         <div
           className="pointer-events-none absolute inset-0"
           style={{
             background:
               'radial-gradient(ellipse at 5% 80%, rgba(240,120,32,0.10) 0%, transparent 55%), radial-gradient(ellipse at 95% 10%, rgba(20,200,180,0.07) 0%, transparent 50%)',
           }}
+        />
+        <SparkleField count={18} />
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-32"
+          style={{ background: 'linear-gradient(to bottom, transparent, var(--color-bg-main, #120F0A))' }}
         />
         <div className="relative mx-auto max-w-[1200px]">
           <a
