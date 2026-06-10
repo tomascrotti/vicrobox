@@ -1,19 +1,23 @@
-import Link from 'next/link'
+'use client'
 
-const SPARKLES = [
-  { left: '7%', top: '28%', color: '#00B898', size: '18px', delay: '0s', duration: '2.6s' },
-  { left: '14%', top: '62%', color: '#00B898', size: '12px', delay: '1.3s', duration: '3.4s' },
-  { left: '23%', top: '44%', color: '#F5C420', size: '14px', delay: '2.6s', duration: '2.9s' },
-  { left: '48%', top: '18%', color: '#F07820', size: '13px', delay: '0.5s', duration: '3.8s' },
-  { left: '77%', top: '28%', color: '#00B898', size: '16px', delay: '0.9s', duration: '2.4s' },
-  { left: '86%', top: '55%', color: '#28C44A', size: '12px', delay: '2.0s', duration: '3.1s' },
-  { left: '92%', top: '38%', color: '#F5C420', size: '11px', delay: '3.2s', duration: '4.0s' },
-  { left: '36%', top: '78%', color: '#00B898', size: '10px', delay: '1.7s', duration: '2.7s' },
-  { left: '65%', top: '72%', color: '#1A52C8', size: '11px', delay: '0.3s', duration: '3.6s' },
-  { left: '30%', top: '12%', color: '#EA7C03', size: '13px', delay: '1.1s', duration: '2.5s' },
-  { left: '58%', top: '50%', color: '#F8BD19', size: '10px', delay: '2.3s', duration: '3.3s' },
-  { left: '18%', top: '85%', color: '#079684', size: '14px', delay: '0.7s', duration: '4.2s' },
-]
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+
+type Sparkle = { left: string; top: string; color: string; size: string; delay: string; duration: string }
+
+const SPARKLE_COLORS = ['#00B898', '#F5C420', '#F07820', '#28C44A', '#1A52C8', '#EA7C03', '#F8BD19', '#079684']
+const SPARKLE_COUNT = 12
+
+function randomSparkles(): Sparkle[] {
+  return Array.from({ length: SPARKLE_COUNT }, () => ({
+    left: `${Math.round(Math.random() * 96)}%`,
+    top: `${Math.round(Math.random() * 92)}%`,
+    color: SPARKLE_COLORS[Math.floor(Math.random() * SPARKLE_COLORS.length)],
+    size: `${10 + Math.round(Math.random() * 8)}px`,
+    delay: `${(Math.random() * 4).toFixed(1)}s`,
+    duration: `${(2.4 + Math.random() * 1.8).toFixed(1)}s`,
+  }))
+}
 
 const PRE_LETTERS = [
   { letter: 'V', color: '#F8BD19' },
@@ -25,6 +29,12 @@ const PRE_LETTERS = [
 ]
 
 export function Hero() {
+  const [sparkles, setSparkles] = useState<Sparkle[]>([])
+
+  useEffect(() => {
+    setSparkles(randomSparkles())
+  }, [])
+
   return (
     <section
       id="inicio"
@@ -32,7 +42,7 @@ export function Hero() {
       style={{ background: 'radial-gradient(ellipse 80% 55% at 50% 65%, rgba(240,120,32,0.07) 0%, transparent 65%)' }}
     >
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        {SPARKLES.map((s, i) => (
+        {sparkles.map((s, i) => (
           <span
             key={i}
             className="absolute"
