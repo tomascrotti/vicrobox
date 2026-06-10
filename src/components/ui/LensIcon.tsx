@@ -14,7 +14,7 @@ export function LensIcon({ variant = 'mono', className }: LensIconProps) {
           <circle cx="45" cy="45" r="36" fill="none" stroke="#079684" strokeWidth="2" />
         </>
       ) : (
-        <circle cx="45" cy="45" r="40" fill="none" stroke="#EA7C03" strokeWidth="6" />
+        <circle cx="45" cy="45" r="36" fill="none" stroke="#EA7C03" strokeWidth="14" />
       )}
       <circle cx="45" cy="45" r="33" fill="#0A0A0A" />
       <circle cx="45" cy="45" r="29" fill="none" stroke="#1A1A1A" strokeWidth="1.5" />
