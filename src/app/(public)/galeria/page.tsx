@@ -1,5 +1,6 @@
 import { getActiveEvents } from '@/lib/data/events'
 import { GalleryGrid } from '@/components/public/GalleryGrid'
+import { SparkleField } from '@/components/public/SparkleField'
 
 export default async function GaleriaPage() {
   const events = await getActiveEvents()
@@ -7,8 +8,13 @@ export default async function GaleriaPage() {
   return (
     <main className="min-h-screen bg-bg-main text-white">
       {/* Hero header */}
-      <section className="px-6 md:px-12 pt-24 pb-8 border-b border-white/8">
-        <div className="mx-auto max-w-[1200px]">
+      <section className="relative px-6 md:px-12 pt-24 pb-16 overflow-hidden">
+        <SparkleField count={18} />
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-32"
+          style={{ background: 'linear-gradient(to bottom, transparent, var(--color-bg-main, #120F0A))' }}
+        />
+        <div className="relative mx-auto max-w-[1200px]">
           <a
             href="/"
             className="mb-6 flex w-fit items-center gap-2 text-sm font-bold text-white/40 hover:text-white transition-colors"
